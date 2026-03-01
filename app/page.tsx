@@ -20,20 +20,20 @@ export default function Home() {
       <Suspense>
         <RefProvider>
           <RefBanner />
-          <Nav />
-          <main id="main">
-            <Hero />
-            <PainSection />
-            <StatBar />
-            <Solution />
-            <Process />
-            <Features />
-            <Pricing />
-            <CTA />
-          </main>
-          <Footer />
         </RefProvider>
       </Suspense>
+      <Nav />
+      <main id="main">
+        <Hero />
+        <PainSection />
+        <StatBar />
+        <Solution />
+        <Process />
+        <Features />
+        <Pricing />
+        <CTA />
+      </main>
+      <Footer />
     </>
   );
 }
