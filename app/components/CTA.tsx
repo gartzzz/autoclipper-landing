@@ -23,10 +23,8 @@ export default function CTA() {
           </p>
           <div className="ac-cta-block__actions">
             <a
-              href="https://github.com/gartzzz/autoclipper"
+              href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
               className="ac-button ac-button--primary ac-button--lg"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Descargalo gratis
               <span className="ac-button__arrow" aria-hidden="true">

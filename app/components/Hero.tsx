@@ -24,10 +24,8 @@ export default function Hero() {
 
           <div className="ac-hero__actions ac-hero-animate--cta">
             <a
-              href="https://github.com/gartzzz/autoclipper"
+              href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
               className="ac-button ac-button--primary ac-button--lg"
-              target="_blank"
-              rel="noopener noreferrer"
             >
               Descargalo gratis
               <span className="ac-button__arrow" aria-hidden="true">

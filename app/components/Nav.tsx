@@ -30,10 +30,8 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="https://github.com/gartzzz/autoclipper"
+            href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
             className="ac-button ac-button--sm ac-button--primary"
-            target="_blank"
-            rel="noopener noreferrer"
           >
             Descargar
           </a>
