@@ -1371,7 +1371,6 @@
 
 @media (max-width: 1024px) {
   .ac-hero__visual {
-    order: -1;
     max-width: 520px;
     margin-inline: auto;
     width: 100%;
