@@ -20,6 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
+      <head>
+        <link rel="stylesheet" href="https://use.typekit.net/ynt5sos.css" />
+      </head>
       <body>
         <a href="#main" className="skip-link">
           Saltar al contenido principal

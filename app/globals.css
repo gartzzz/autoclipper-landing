@@ -78,7 +78,7 @@ body {
   background-image:
     radial-gradient(
       ellipse 120% 50% at 50% -10%,
-      rgba(0, 212, 255, 0.04) 0%,
+      rgba(157, 140, 255, 0.04) 0%,
       transparent 60%
     );
 
@@ -237,12 +237,12 @@ table {
 */
 
 ::selection {
-  background: rgba(0, 212, 255, 0.20);
+  background: rgba(157, 140, 255, 0.20);
   color: var(--ac-text-primary);
 }
 
 ::-moz-selection {
-  background: rgba(0, 212, 255, 0.20);
+  background: rgba(157, 140, 255, 0.20);
   color: var(--ac-text-primary);
 }
 

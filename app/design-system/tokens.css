@@ -12,59 +12,58 @@
   mechanical rhythm than the 4px grid of generic frameworks —
   closer to how you'd spec a plugin UI than a marketing page.
 
-  Cyan (#00D4FF) = detection, signal, the AI seeing things.
-  Magenta (#FF0080) = viral, heat, the moment that matters.
-  Both are borrowed from video-world: chroma key, timecode displays,
-  waveform monitors. They feel earned here.
+  Purple (#9D8CFF) = Premiere Pro's identity. The single accent
+  anchors the entire palette — monochromatic, authoritative,
+  unmistakably tied to the tool it extends.
 */
 
-/* ─── Google Fonts Import ─────────────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* ─── Google Fonts Import (Mono only — Polymath via Typekit in layout) ──── */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 /* ─── Root Token Definitions ──────────────────────────────────────────────── */
 :root {
 
-  /* --- Color: Backgrounds (z-layered, not pure black) --- */
+  /* --- Color: Backgrounds (carbon black, never pure #000) --- */
   /*
-    bg-void: The absolute base. Not #000 — #000 is a screen artifact.
-    bg-base: Primary body. Warm near-black, like a powered-off monitor.
+    bg-void: The absolute base. Carbon, not blue-tinted.
+    bg-base: Primary body. Neutral near-black.
     bg-surface: Cards, panels. Raised one stop.
     bg-elevated: Dropdowns, modals, tooltips. The top of the stack.
     bg-overlay: Semi-transparent scrim for depth separation.
   */
-  --ac-bg-void:        #080a0c;
-  --ac-bg-base:        #0c0e12;
-  --ac-bg-surface:     #111419;
-  --ac-bg-elevated:    #181c23;
-  --ac-bg-overlay:     rgba(8, 10, 12, 0.85);
+  --ac-bg-void:        #09090b;
+  --ac-bg-base:        #0d0d10;
+  --ac-bg-surface:     #131316;
+  --ac-bg-elevated:    #1a1a1f;
+  --ac-bg-overlay:     rgba(9, 9, 11, 0.85);
 
   /* --- Color: Borders (structural, not decorative) --- */
-  --ac-border-faint:   rgba(255, 255, 255, 0.04);
-  --ac-border-subtle:  rgba(255, 255, 255, 0.08);
-  --ac-border-default: rgba(255, 255, 255, 0.12);
-  --ac-border-strong:  rgba(255, 255, 255, 0.20);
+  --ac-border-faint:   rgba(232, 229, 224, 0.04);
+  --ac-border-subtle:  rgba(232, 229, 224, 0.08);
+  --ac-border-default: rgba(232, 229, 224, 0.12);
+  --ac-border-strong:  rgba(232, 229, 224, 0.20);
 
-  /* --- Color: Text Hierarchy --- */
-  --ac-text-primary:   #e8eaed;
-  --ac-text-secondary: #8a9099;
-  --ac-text-tertiary:  #565d6b;
-  --ac-text-inverse:   #080a0c;
+  /* --- Color: Text Hierarchy (warm off-white, never pure #fff) --- */
+  --ac-text-primary:   #E8E5E0;
+  --ac-text-secondary: #908C86;
+  --ac-text-tertiary:  #5A5752;
+  --ac-text-inverse:   #09090b;
 
-  /* --- Color: Accent — Cyan (AI signal, detection, data) --- */
-  --ac-cyan-dim:       rgba(0, 212, 255, 0.08);
-  --ac-cyan-subtle:    rgba(0, 212, 255, 0.15);
-  --ac-cyan-muted:     rgba(0, 212, 255, 0.40);
-  --ac-cyan:           #00D4FF;
-  --ac-cyan-bright:    #33DDFF;
-  --ac-cyan-glow:      rgba(0, 212, 255, 0.25);
+  /* --- Color: Accent — Premiere Purple (monochromatic, single accent) --- */
+  --ac-cyan-dim:       rgba(157, 140, 255, 0.08);
+  --ac-cyan-subtle:    rgba(157, 140, 255, 0.15);
+  --ac-cyan-muted:     rgba(157, 140, 255, 0.40);
+  --ac-cyan:           #9D8CFF;
+  --ac-cyan-bright:    #B5A6FF;
+  --ac-cyan-glow:      rgba(157, 140, 255, 0.25);
 
-  /* --- Color: Accent — Magenta (viral heat, high-score moments) --- */
-  --ac-magenta-dim:    rgba(255, 0, 128, 0.08);
-  --ac-magenta-subtle: rgba(255, 0, 128, 0.15);
-  --ac-magenta-muted:  rgba(255, 0, 128, 0.40);
-  --ac-magenta:        #FF0080;
-  --ac-magenta-bright: #FF3399;
-  --ac-magenta-glow:   rgba(255, 0, 128, 0.25);
+  /* --- Color: Accent — Secondary (same purple family, monochromatic) --- */
+  --ac-magenta-dim:    rgba(157, 140, 255, 0.08);
+  --ac-magenta-subtle: rgba(157, 140, 255, 0.15);
+  --ac-magenta-muted:  rgba(157, 140, 255, 0.40);
+  --ac-magenta:        #9D8CFF;
+  --ac-magenta-bright: #B5A6FF;
+  --ac-magenta-glow:   rgba(157, 140, 255, 0.25);
 
   /* --- Color: Semantic --- */
   --ac-success:        #00C875;
@@ -76,11 +75,12 @@
 
   /* --- Typography: Font Families --- */
   /*
-    Inter: For everything humans read. Clean, neutral, professional.
+    Polymath: Display and body. Distinctive, editorial quality.
+    Loaded via Adobe Typekit in layout.tsx.
     JetBrains Mono: For scores, timestamps, data, technical labels.
     It signals "this number was computed", not "this number was written".
   */
-  --ac-font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ac-font-sans:  'polymath', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ac-font-mono:  'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 
   /* --- Typography: Scale (Minor Third — 1.25 ratio) --- */
@@ -194,9 +194,9 @@
     0 4px 16px rgba(0, 0, 0, 0.5);
 
   --ac-shadow-cyan-md:
-    0 0 0 1px rgba(0, 212, 255, 0.30),
+    0 0 0 1px rgba(157, 140, 255, 0.30),
     0 0 32px var(--ac-cyan-glow),
-    0 0 64px rgba(0, 212, 255, 0.10),
+    0 0 64px rgba(157, 140, 255, 0.10),
     0 8px 32px rgba(0, 0, 0, 0.6);
 
   --ac-shadow-magenta-sm:
@@ -205,9 +205,9 @@
     0 4px 16px rgba(0, 0, 0, 0.5);
 
   --ac-shadow-magenta-md:
-    0 0 0 1px rgba(255, 0, 128, 0.30),
+    0 0 0 1px rgba(157, 140, 255, 0.30),
     0 0 32px var(--ac-magenta-glow),
-    0 0 64px rgba(255, 0, 128, 0.10),
+    0 0 64px rgba(157, 140, 255, 0.10),
     0 8px 32px rgba(0, 0, 0, 0.6);
 
   /* --- Transitions: Specific easing curves --- */
