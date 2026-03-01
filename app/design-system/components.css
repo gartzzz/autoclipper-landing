@@ -2731,3 +2731,61 @@
   }
 
 }
+
+/* ─── Pricing: Tier Cards ──────────────────────────────────────────────────── */
+
+.ac-pricing-tier__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+}
+
+.ac-pricing-tier__price {
+  display: flex;
+  flex-direction: column;
+}
+
+.ac-pricing-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-3);
+  list-style: none;
+  padding: 0;
+}
+
+.ac-pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-3);
+  font-size: var(--ac-text-sm);
+  line-height: var(--ac-leading-normal);
+  color: var(--ac-text-secondary);
+}
+
+.ac-pricing-features li::before {
+  content: '\00d7';
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-text-tertiary);
+  border-radius: var(--ac-radius-xs);
+  border: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  background: transparent;
+  line-height: 1;
+}
+
+.ac-pricing-features li[data-included="true"]::before {
+  content: '\2713';
+  color: var(--ac-success);
+  border-color: rgba(0, 200, 117, 0.2);
+  background: var(--ac-success-dim);
+}
+
+.ac-pricing-features li[data-included="true"] {
+  color: var(--ac-text-primary);
+}

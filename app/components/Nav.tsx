@@ -29,6 +29,11 @@ export default function Nav() {
           </a>
         </li>
         <li>
+          <a href="#precios" className="ac-nav__link">
+            Precios
+          </a>
+        </li>
+        <li>
           <a
             href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
             className="ac-button ac-button--sm ac-button--primary"
