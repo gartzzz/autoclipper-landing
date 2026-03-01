@@ -1008,9 +1008,8 @@
 .ac-nav__logo-mark {
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, var(--ac-cyan), var(--ac-magenta));
-  border-radius: var(--ac-radius-xs);
   flex-shrink: 0;
+  object-fit: contain;
 }
 
 .ac-nav__links {

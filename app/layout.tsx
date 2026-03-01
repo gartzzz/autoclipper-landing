@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "AutoClipper — Encuentra los momentos virales en tu video con IA",
   description:
     "Plugin de Premiere Pro que analiza tus transcripciones y detecta automaticamente los clips con mayor potencial viral. Scoring con 7 factores de viralidad.",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "AutoClipper — Momentos virales con IA",
     description:

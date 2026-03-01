@@ -14,7 +14,7 @@ export default function Nav() {
   return (
     <nav className={`ac-nav${scrolled ? " ac-nav--scrolled" : ""}`} aria-label="Navegacion principal">
       <a href="#" className="ac-nav__logo">
-        <span className="ac-nav__logo-mark" aria-hidden="true" />
+        <img src="/logo.png" alt="" className="ac-nav__logo-mark" aria-hidden="true" />
         AutoClipper
       </a>
       <ul className="ac-nav__links">
