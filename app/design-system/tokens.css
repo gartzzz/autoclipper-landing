@@ -1,0 +1,280 @@
+/*
+  AutoClipper Design System — tokens.css
+  =======================================
+  The visual DNA of a professional tool.
+
+  Philosophy: Premiere Pro lives in near-black. This landing page
+  is its window to the world — darker than most SaaS, lighter than
+  a terminal. Backgrounds are layered like a compositing timeline:
+  each surface sits on a z-plane with its own depth signature.
+
+  The 6px base grid is intentional. It creates a tighter, more
+  mechanical rhythm than the 4px grid of generic frameworks —
+  closer to how you'd spec a plugin UI than a marketing page.
+
+  Cyan (#00D4FF) = detection, signal, the AI seeing things.
+  Magenta (#FF0080) = viral, heat, the moment that matters.
+  Both are borrowed from video-world: chroma key, timecode displays,
+  waveform monitors. They feel earned here.
+*/
+
+/* ─── Google Fonts Import ─────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ─── Root Token Definitions ──────────────────────────────────────────────── */
+:root {
+
+  /* --- Color: Backgrounds (z-layered, not pure black) --- */
+  /*
+    bg-void: The absolute base. Not #000 — #000 is a screen artifact.
+    bg-base: Primary body. Warm near-black, like a powered-off monitor.
+    bg-surface: Cards, panels. Raised one stop.
+    bg-elevated: Dropdowns, modals, tooltips. The top of the stack.
+    bg-overlay: Semi-transparent scrim for depth separation.
+  */
+  --ac-bg-void:        #080a0c;
+  --ac-bg-base:        #0c0e12;
+  --ac-bg-surface:     #111419;
+  --ac-bg-elevated:    #181c23;
+  --ac-bg-overlay:     rgba(8, 10, 12, 0.85);
+
+  /* --- Color: Borders (structural, not decorative) --- */
+  --ac-border-faint:   rgba(255, 255, 255, 0.04);
+  --ac-border-subtle:  rgba(255, 255, 255, 0.08);
+  --ac-border-default: rgba(255, 255, 255, 0.12);
+  --ac-border-strong:  rgba(255, 255, 255, 0.20);
+
+  /* --- Color: Text Hierarchy --- */
+  --ac-text-primary:   #e8eaed;
+  --ac-text-secondary: #8a9099;
+  --ac-text-tertiary:  #565d6b;
+  --ac-text-inverse:   #080a0c;
+
+  /* --- Color: Accent — Cyan (AI signal, detection, data) --- */
+  --ac-cyan-dim:       rgba(0, 212, 255, 0.08);
+  --ac-cyan-subtle:    rgba(0, 212, 255, 0.15);
+  --ac-cyan-muted:     rgba(0, 212, 255, 0.40);
+  --ac-cyan:           #00D4FF;
+  --ac-cyan-bright:    #33DDFF;
+  --ac-cyan-glow:      rgba(0, 212, 255, 0.25);
+
+  /* --- Color: Accent — Magenta (viral heat, high-score moments) --- */
+  --ac-magenta-dim:    rgba(255, 0, 128, 0.08);
+  --ac-magenta-subtle: rgba(255, 0, 128, 0.15);
+  --ac-magenta-muted:  rgba(255, 0, 128, 0.40);
+  --ac-magenta:        #FF0080;
+  --ac-magenta-bright: #FF3399;
+  --ac-magenta-glow:   rgba(255, 0, 128, 0.25);
+
+  /* --- Color: Semantic --- */
+  --ac-success:        #00C875;
+  --ac-success-dim:    rgba(0, 200, 117, 0.12);
+  --ac-warning:        #F5A623;
+  --ac-warning-dim:    rgba(245, 166, 35, 0.12);
+  --ac-danger:         #FF4444;
+  --ac-danger-dim:     rgba(255, 68, 68, 0.12);
+
+  /* --- Typography: Font Families --- */
+  /*
+    Inter: For everything humans read. Clean, neutral, professional.
+    JetBrains Mono: For scores, timestamps, data, technical labels.
+    It signals "this number was computed", not "this number was written".
+  */
+  --ac-font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ac-font-mono:  'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  /* --- Typography: Scale (Minor Third — 1.25 ratio) --- */
+  --ac-text-xs:    0.694rem;   /* 11.1px  — labels, badges */
+  --ac-text-sm:    0.833rem;   /* 13.3px  — secondary copy, captions */
+  --ac-text-base:  1rem;       /* 16px    — body */
+  --ac-text-md:    1.2rem;     /* 19.2px  — lead text */
+  --ac-text-lg:    1.44rem;    /* 23px    — subheadings */
+  --ac-text-xl:    1.728rem;   /* 27.6px  — h3 */
+  --ac-text-2xl:   2.074rem;   /* 33.2px  — h2 */
+  --ac-text-3xl:   2.488rem;   /* 39.8px  — h1 small */
+  --ac-text-4xl:   3.583rem;   /* 57.3px  — hero h1 */
+  --ac-text-5xl:   4.8rem;     /* 76.8px  — display */
+
+  /* --- Typography: Weight --- */
+  --ac-weight-light:    300;
+  --ac-weight-regular:  400;
+  --ac-weight-medium:   500;
+  --ac-weight-semibold: 600;
+  --ac-weight-bold:     700;
+  --ac-weight-black:    800;
+
+  /* --- Typography: Leading (line-height) --- */
+  --ac-leading-tight:   1.1;
+  --ac-leading-snug:    1.25;
+  --ac-leading-normal:  1.5;
+  --ac-leading-relaxed: 1.7;
+
+  /* --- Typography: Tracking (letter-spacing) --- */
+  --ac-tracking-tightest: -0.04em;
+  --ac-tracking-tight:    -0.025em;
+  --ac-tracking-snug:     -0.015em;
+  --ac-tracking-normal:    0em;
+  --ac-tracking-wide:      0.06em;
+  --ac-tracking-wider:     0.10em;
+  --ac-tracking-widest:    0.16em;
+
+  /* --- Spacing: 6px base grid --- */
+  /*
+    Why 6px? It creates 4-step groupings at 24px (comfortable),
+    8-step at 48px (section breathing room), and hits 72px/96px
+    at section scale — numbers that feel professional, not generic.
+  */
+  --ac-space-1:   6px;
+  --ac-space-2:   12px;
+  --ac-space-3:   18px;
+  --ac-space-4:   24px;
+  --ac-space-5:   30px;
+  --ac-space-6:   36px;
+  --ac-space-7:   42px;
+  --ac-space-8:   48px;
+  --ac-space-10:  60px;
+  --ac-space-12:  72px;
+  --ac-space-16:  96px;
+  --ac-space-20:  120px;
+  --ac-space-24:  144px;
+  --ac-space-32:  192px;
+
+  /* --- Border Radius: Restrained, purposeful --- */
+  /*
+    We're a tool. Not a friendly SaaS balloon.
+    Sharp where structure matters, slightly softened where touch matters.
+  */
+  --ac-radius-none:  0px;
+  --ac-radius-xs:    2px;   /* Tags, inline elements */
+  --ac-radius-sm:    4px;   /* Inputs, small UI */
+  --ac-radius-md:    6px;   /* Buttons, cards */
+  --ac-radius-lg:    10px;  /* Large cards, modals */
+  --ac-radius-xl:    16px;  /* Feature blocks */
+  --ac-radius-pill:  999px; /* Badges only */
+
+  /* --- Border Width --- */
+  --ac-border-width-thin:   1px;
+  --ac-border-width-medium: 1.5px;
+  --ac-border-width-thick:  2px;
+
+  /* --- Shadows: Cinematic, depth-of-field inspired --- */
+  /*
+    Real software doesn't use `box-shadow: 0 4px 6px rgba(0,0,0,0.1)`.
+    These shadows are layered — a deep ambient layer plus a tight
+    contact shadow — the same logic as a fill light + key light.
+    The cyan and magenta glow variants are used for interactive states.
+  */
+  --ac-shadow-sm:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.3);
+
+  --ac-shadow-md:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 1px 2px rgba(0, 0, 0, 0.6);
+
+  --ac-shadow-lg:
+    0 4px 8px rgba(0, 0, 0, 0.5),
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.7);
+
+  --ac-shadow-xl:
+    0 8px 16px rgba(0, 0, 0, 0.6),
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 4px 8px rgba(0, 0, 0, 0.8);
+
+  --ac-shadow-inset:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+
+  /* Glow shadows — for interactive states and feature cards */
+  --ac-shadow-cyan-sm:
+    0 0 0 1px var(--ac-cyan-subtle),
+    0 0 16px var(--ac-cyan-glow),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+
+  --ac-shadow-cyan-md:
+    0 0 0 1px rgba(0, 212, 255, 0.30),
+    0 0 32px var(--ac-cyan-glow),
+    0 0 64px rgba(0, 212, 255, 0.10),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+
+  --ac-shadow-magenta-sm:
+    0 0 0 1px var(--ac-magenta-subtle),
+    0 0 16px var(--ac-magenta-glow),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+
+  --ac-shadow-magenta-md:
+    0 0 0 1px rgba(255, 0, 128, 0.30),
+    0 0 32px var(--ac-magenta-glow),
+    0 0 64px rgba(255, 0, 128, 0.10),
+    0 8px 32px rgba(0, 0, 0, 0.6);
+
+  /* --- Transitions: Specific easing curves --- */
+  /*
+    --ac-ease-out-expo: Fast start, asymptotic approach to rest.
+    Used for elements entering the viewport — they arrive with urgency
+    and settle into place. Like a timeline scrub coming to rest.
+
+    --ac-ease-in-expo: Slow start, sharp exit.
+    Used for elements leaving — they hold position then cut.
+
+    --ac-ease-spring: Slightly overshoots, snaps back.
+    Used for interactive feedback — button presses, hover lifts.
+
+    --ac-ease-cinematic: Linear through middle, eases at both ends.
+    Used for large-scale animations — section reveals, hero elements.
+  */
+  --ac-ease-out-expo:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ac-ease-in-expo:     cubic-bezier(0.7, 0, 0.84, 0);
+  --ac-ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ac-ease-cinematic:   cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ac-ease-sharp:       cubic-bezier(0.4, 0, 0.6, 1);
+
+  /* Durations */
+  --ac-duration-instant:    80ms;
+  --ac-duration-fast:       150ms;
+  --ac-duration-base:       220ms;
+  --ac-duration-moderate:   360ms;
+  --ac-duration-slow:       500ms;
+  --ac-duration-reveal:     700ms;
+
+  /* Composite transitions (property + duration + easing) */
+  --ac-transition-color:
+    color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    background-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    border-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    fill var(--ac-duration-fast) var(--ac-ease-out-expo);
+
+  --ac-transition-shadow:
+    box-shadow var(--ac-duration-base) var(--ac-ease-out-expo);
+
+  --ac-transition-transform:
+    transform var(--ac-duration-base) var(--ac-ease-spring);
+
+  --ac-transition-all:
+    color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    background-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    border-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    box-shadow var(--ac-duration-base) var(--ac-ease-out-expo),
+    transform var(--ac-duration-base) var(--ac-ease-spring),
+    opacity var(--ac-duration-base) var(--ac-ease-out-expo);
+
+  /* --- Layout: Container widths --- */
+  --ac-container-sm:    640px;
+  --ac-container-md:    768px;
+  --ac-container-lg:    1024px;
+  --ac-container-xl:    1200px;
+  --ac-container-2xl:   1440px;
+
+  /* --- Z-index scale --- */
+  --ac-z-below:    -1;
+  --ac-z-base:      0;
+  --ac-z-raised:    10;
+  --ac-z-dropdown:  100;
+  --ac-z-sticky:    200;
+  --ac-z-overlay:   300;
+  --ac-z-modal:     400;
+  --ac-z-toast:     500;
+
+}

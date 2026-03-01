@@ -1,0 +1,411 @@
+/*
+  AutoClipper Design System — animations.css
+  ==========================================
+  Motion with intention.
+
+  Philosophy: Professional tools don't bounce. They reveal.
+  Animations here are one-directional — elements enter with purpose,
+  settle without overshoot (except interactive states, which use
+  the spring curve to provide tactile feedback).
+
+  The stagger system is mechanical: each item waits exactly
+  80ms longer than the previous. This is the cadence of a
+  loading bar progressing — regular, predictable, trustworthy.
+
+  Scroll animations use the Intersection Observer pattern
+  via CSS alone: [data-reveal] elements start hidden and
+  transition when .is-visible is applied by JS (or when
+  IntersectionObserver runs).
+
+  All animations respect prefers-reduced-motion.
+*/
+
+/* ─── Keyframe Definitions ─────────────────────────────────────────────────── */
+
+@keyframes ac-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ac-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ac-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ac-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Score meter fill — the bar animates from 0 to its value */
+@keyframes ac-meter-fill {
+  from {
+    width: 0%;
+  }
+}
+
+/* The LED dot pulse — used on active badges/indicators */
+@keyframes ac-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 4px currentColor;
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+    opacity: 0.8;
+  }
+}
+
+/* Scanning line — subtle animation for the scan-line card effect */
+@keyframes ac-scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+/* The hero ambient glow breathes */
+@keyframes ac-breathe {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Cursor blink for monospace text emphasis */
+@keyframes ac-cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Shimmer — loading state */
+@keyframes ac-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+/* ─── Scroll-Reveal: Data Attribute System ─────────────────────────────────── */
+/*
+  Usage:
+    <div data-reveal>content</div>
+    <div data-reveal="slide-left">content</div>
+    <div data-reveal="scale">content</div>
+
+  JS adds .is-visible via IntersectionObserver.
+  Default: slide-up (most readable direction for landing pages).
+
+  Stagger children with:
+    <div data-reveal-group>
+      <div data-reveal-child>...</div>
+      <div data-reveal-child>...</div>
+    </div>
+*/
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--ac-duration-reveal) var(--ac-ease-out-expo),
+    transform var(--ac-duration-reveal) var(--ac-ease-out-expo);
+  will-change: opacity, transform;
+}
+
+[data-reveal="slide-left"] {
+  transform: translateX(-20px);
+}
+
+[data-reveal="slide-right"] {
+  transform: translateX(20px);
+}
+
+[data-reveal="scale"] {
+  transform: scale(0.96);
+}
+
+[data-reveal="fade"] {
+  transform: none;
+}
+
+[data-reveal].is-visible,
+[data-reveal="slide-left"].is-visible,
+[data-reveal="slide-right"].is-visible,
+[data-reveal="scale"].is-visible,
+[data-reveal="fade"].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered children */
+[data-reveal-group] [data-reveal-child] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--ac-duration-reveal) var(--ac-ease-out-expo),
+    transform var(--ac-duration-reveal) var(--ac-ease-out-expo);
+  will-change: opacity, transform;
+}
+
+[data-reveal-group].is-visible [data-reveal-child] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Stagger delays: 0 through 8 children */
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(1) { transition-delay: 0ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(2) { transition-delay: 80ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(3) { transition-delay: 160ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(4) { transition-delay: 240ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(5) { transition-delay: 320ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(6) { transition-delay: 400ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(7) { transition-delay: 480ms; }
+[data-reveal-group].is-visible [data-reveal-child]:nth-child(8) { transition-delay: 560ms; }
+
+/* Slower stagger for feature grids (cards need more time to feel good) */
+[data-reveal-group="slow"].is-visible [data-reveal-child]:nth-child(2) { transition-delay: 120ms; }
+[data-reveal-group="slow"].is-visible [data-reveal-child]:nth-child(3) { transition-delay: 240ms; }
+[data-reveal-group="slow"].is-visible [data-reveal-child]:nth-child(4) { transition-delay: 360ms; }
+[data-reveal-group="slow"].is-visible [data-reveal-child]:nth-child(5) { transition-delay: 480ms; }
+[data-reveal-group="slow"].is-visible [data-reveal-child]:nth-child(6) { transition-delay: 600ms; }
+
+/* ─── Hero Section Entrance ────────────────────────────────────────────────── */
+/*
+  The hero loads immediately (no scroll trigger needed).
+  Uses CSS animation directly — no JS dependency for above-the-fold.
+  Staggered via animation-delay.
+*/
+
+.ac-hero-animate {
+  animation-fill-mode: both;
+}
+
+.ac-hero-animate--badge {
+  animation: ac-fade-in var(--ac-duration-moderate) var(--ac-ease-out-expo) 100ms both;
+}
+
+.ac-hero-animate--title {
+  animation: ac-slide-up var(--ac-duration-reveal) var(--ac-ease-out-expo) 200ms both;
+}
+
+.ac-hero-animate--subtitle {
+  animation: ac-slide-up var(--ac-duration-reveal) var(--ac-ease-out-expo) 340ms both;
+}
+
+.ac-hero-animate--cta {
+  animation: ac-slide-up var(--ac-duration-reveal) var(--ac-ease-out-expo) 460ms both;
+}
+
+.ac-hero-animate--visual {
+  animation: ac-scale-in 800ms var(--ac-ease-out-expo) 580ms both;
+}
+
+/* ─── Card Hover Animations ────────────────────────────────────────────────── */
+/*
+  Lift + border glow on hover. Handled in components.css via
+  transform/box-shadow transitions. Here we add the icon slot
+  animation that accompanies card hover.
+*/
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-card:hover .ac-icon-slot {
+    transform: scale(1.08);
+    transition: var(--ac-transition-transform);
+  }
+
+  .ac-card--glow-cyan:hover .ac-icon-slot--cyan {
+    box-shadow: 0 0 12px var(--ac-cyan-glow);
+  }
+
+  .ac-card--glow-magenta:hover .ac-icon-slot--magenta {
+    box-shadow: 0 0 12px var(--ac-magenta-glow);
+  }
+}
+
+/* ─── Button Hover Animations ──────────────────────────────────────────────── */
+/* The actual transform/shadow transitions live in components.css.
+   Here: the icon/arrow inside the button slides on hover. */
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-button .ac-button__arrow {
+    display: inline-block;
+    transition: transform var(--ac-duration-fast) var(--ac-ease-spring);
+  }
+
+  .ac-button:hover .ac-button__arrow {
+    transform: translateX(3px);
+  }
+}
+
+/* ─── Active Badge LED Pulse ───────────────────────────────────────────────── */
+
+.ac-badge--cyan::before,
+.ac-badge--success::before {
+  animation: ac-pulse-glow 2.4s var(--ac-ease-cinematic) infinite;
+}
+
+/* ─── Score Bar Fill Animation ─────────────────────────────────────────────── */
+/*
+  Score bar fill is now CSS transition-driven via --score-width custom property.
+  The fill starts at width: 0% and transitions to var(--score-width) when
+  the parent reveal group becomes visible. See components.css for details.
+*/
+
+/* ─── Nav Entrance ─────────────────────────────────────────────────────────── */
+
+.ac-nav {
+  animation: ac-slide-down 400ms var(--ac-ease-out-expo) 50ms both;
+}
+
+/* ─── Breathing Glow: Hero ambient light ───────────────────────────────────── */
+
+.ac-hero-glow {
+  animation: ac-breathe 6s var(--ac-ease-cinematic) infinite;
+}
+
+/* ─── Loading Shimmer ──────────────────────────────────────────────────────── */
+
+.ac-shimmer {
+  background: linear-gradient(
+    105deg,
+    var(--ac-bg-elevated) 25%,
+    var(--ac-bg-surface) 50%,
+    var(--ac-bg-elevated) 75%
+  );
+  background-size: 200% auto;
+  animation: ac-shimmer 1.6s linear infinite;
+}
+
+/* ─── Cursor Blink ─────────────────────────────────────────────────────────── */
+
+.ac-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--ac-cyan);
+  vertical-align: text-bottom;
+  animation: ac-cursor-blink 1s step-end infinite;
+  border-radius: 1px;
+}
+
+/* ─── Reduced Motion: Override everything ──────────────────────────────────── */
+/*
+  When the user has reduced motion enabled:
+  - All CSS animations are disabled (duration: 0.01ms)
+  - Transitions are kept but collapsed to near-instant
+  - The functional behavior (hover states, visibility) is preserved
+  - No content is hidden permanently
+
+  This is comprehensive: it catches @keyframe animations,
+  transitions on scroll-reveal elements, and stagger delays.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  /* Immediately show all reveal elements */
+  [data-reveal],
+  [data-reveal="slide-left"],
+  [data-reveal="slide-right"],
+  [data-reveal="scale"],
+  [data-reveal="fade"] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  [data-reveal-group] [data-reveal-child] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Remove will-change to free up GPU memory */
+  [data-reveal],
+  [data-reveal-group] [data-reveal-child] {
+    will-change: auto;
+  }
+
+  /* Disable breathing glow entirely */
+  .ac-hero-glow {
+    animation: none;
+  }
+
+  /* Disable LED pulse */
+  .ac-badge--cyan::before,
+  .ac-badge--success::before {
+    animation: none;
+  }
+
+  /* Score bar: static fill */
+  .ac-score-bar__fill {
+    animation: none;
+  }
+
+}

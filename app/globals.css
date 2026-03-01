@@ -1,0 +1,382 @@
+/*
+  AutoClipper — globals.css
+  ==========================
+  Base stylesheet: reset, imports, and foundational rules.
+
+  Import order matters:
+  1. tokens.css — all custom properties (no computed values here)
+  2. animations.css — keyframes and motion system
+  3. components.css — UI component classes
+
+  This file handles:
+  - The opinionated CSS reset (not normalize — we reset with intent)
+  - Base HTML element styles
+  - Selection, scrollbar, and focus styles
+  - Font rendering
+  - The ambient background texture of the page itself
+*/
+
+/* ─── Design System Imports ────────────────────────────────────────────────── */
+
+@import './design-system/tokens.css';
+@import './design-system/animations.css';
+@import './design-system/components.css';
+
+/* ─── Reset ────────────────────────────────────────────────────────────────── */
+/*
+  Opinionated reset — not a blank slate, but a deliberate starting point.
+  We preserve some browser defaults (e.g., em-based font sizes on headings
+  are reset to inherit so our scale tokens control everything).
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Force dark mode — this is not a light/dark toggle product */
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  tab-size: 2;
+  /* Smooth scroll for anchor links */
+  scroll-behavior: smooth;
+  /* Prevent layout shift from scrollbar appearing */
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ─── Base: Body ───────────────────────────────────────────────────────────── */
+/*
+  The page background uses a layered approach:
+  1. --ac-bg-base as the solid fallback
+  2. A very subtle radial gradient from top-center to create
+     the sense that there's a distant light source above
+     (consistent with how Premiere Pro's UI feels — a monitor
+     in a dark room, lit from within)
+  3. A fine noise texture via SVG data URI (optional but distinctive)
+*/
+
+body {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-base);
+  font-weight: var(--ac-weight-regular);
+  line-height: var(--ac-leading-normal);
+  color: var(--ac-text-primary);
+  background-color: var(--ac-bg-base);
+
+  /* Ambient gradient: a distant light source above the page */
+  background-image:
+    radial-gradient(
+      ellipse 120% 50% at 50% -10%,
+      rgba(0, 212, 255, 0.04) 0%,
+      transparent 60%
+    );
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  min-height: 100dvh;
+}
+
+/* ─── Base: Typography ─────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--ac-font-sans);
+  font-weight: var(--ac-weight-bold);
+  line-height: var(--ac-leading-tight);
+  letter-spacing: var(--ac-tracking-tight);
+  color: var(--ac-text-primary);
+  /* Prevent orphans in headings */
+  text-wrap: balance;
+}
+
+p {
+  color: var(--ac-text-secondary);
+  line-height: var(--ac-leading-relaxed);
+  /* Better line wrapping for paragraphs */
+  text-wrap: pretty;
+}
+
+strong, b {
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-text-primary);
+}
+
+em, i {
+  font-style: italic;
+  color: inherit;
+}
+
+small {
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-tertiary);
+}
+
+/* ─── Base: Links ──────────────────────────────────────────────────────────── */
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: var(--ac-transition-color);
+}
+
+a:not([class]) {
+  color: var(--ac-cyan);
+  text-underline-offset: 3px;
+  text-decoration: underline;
+  text-decoration-color: var(--ac-cyan-subtle);
+  text-decoration-thickness: 1px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:not([class]):hover {
+    text-decoration-color: var(--ac-cyan-muted);
+  }
+}
+
+/* ─── Base: Lists ──────────────────────────────────────────────────────────── */
+
+ul, ol {
+  list-style: none;
+}
+
+/* When lists appear in prose context (not components) */
+.ac-prose ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-2);
+}
+
+.ac-prose ul li {
+  padding-left: var(--ac-space-5);
+  position: relative;
+  color: var(--ac-text-secondary);
+  font-size: var(--ac-text-base);
+  line-height: var(--ac-leading-relaxed);
+}
+
+/* Custom bullet: a small cyan dash */
+.ac-prose ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--ac-cyan);
+  font-weight: var(--ac-weight-medium);
+  opacity: 0.7;
+}
+
+/* ─── Base: Form Elements ──────────────────────────────────────────────────── */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+/* ─── Base: Media ──────────────────────────────────────────────────────────── */
+
+img, video, svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* ─── Base: Tables ─────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ─── Focus: Visible Only ──────────────────────────────────────────────────── */
+/*
+  Hide focus ring for mouse users, show it for keyboard.
+  The outline uses cyan to match the accent system.
+*/
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ac-cyan);
+  outline-offset: 3px;
+  border-radius: var(--ac-radius-xs);
+}
+
+/* ─── Selection ────────────────────────────────────────────────────────────── */
+/*
+  Selection highlight uses the cyan-magenta axis —
+  a detail that rewards users who select text.
+*/
+
+::selection {
+  background: rgba(0, 212, 255, 0.20);
+  color: var(--ac-text-primary);
+}
+
+::-moz-selection {
+  background: rgba(0, 212, 255, 0.20);
+  color: var(--ac-text-primary);
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────────────────────── */
+/*
+  Custom scrollbar that matches the dark environment.
+  Thin track, subtle thumb — it should not demand attention.
+*/
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ac-bg-base);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ac-border-subtle);
+  border-radius: var(--ac-radius-pill);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ac-border-default);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ac-border-subtle) var(--ac-bg-base);
+}
+
+/* ─── Utilities ────────────────────────────────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Horizontal divider */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--ac-border-faint);
+  margin-block: var(--ac-space-8);
+}
+
+/* ─── Code Block Base ──────────────────────────────────────────────────────── */
+
+pre, code {
+  font-family: var(--ac-font-mono);
+}
+
+pre {
+  padding: var(--ac-space-5);
+  background: var(--ac-bg-surface);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-md);
+  overflow-x: auto;
+  font-size: var(--ac-text-sm);
+  line-height: var(--ac-leading-relaxed);
+  color: var(--ac-text-primary);
+}
+
+code:not(pre code) {
+  font-family: var(--ac-font-mono);
+  font-size: 0.875em;
+  padding: 2px 6px;
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-xs);
+  color: var(--ac-cyan);
+}
+
+/* ─── Layout Helpers ───────────────────────────────────────────────────────── */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.stack--2  { gap: var(--ac-space-2); }
+.stack--3  { gap: var(--ac-space-3); }
+.stack--4  { gap: var(--ac-space-4); }
+.stack--6  { gap: var(--ac-space-6); }
+.stack--8  { gap: var(--ac-space-8); }
+.stack--12 { gap: var(--ac-space-12); }
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.cluster--2  { gap: var(--ac-space-2); }
+.cluster--3  { gap: var(--ac-space-3); }
+.cluster--4  { gap: var(--ac-space-4); }
+.cluster--6  { gap: var(--ac-space-6); }
+.cluster--8  { gap: var(--ac-space-8); }
+
+/* ─── Accessibility ────────────────────────────────────────────────────────── */
+
+/* Skip to main content — shown on focus */
+.skip-link {
+  position: fixed;
+  top: var(--ac-space-4);
+  left: 50%;
+  transform: translateX(-50%) translateY(-200%);
+  z-index: var(--ac-z-toast);
+  padding: var(--ac-space-2) var(--ac-space-4);
+  background: var(--ac-cyan);
+  color: var(--ac-text-inverse);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-semibold);
+  border-radius: var(--ac-radius-md);
+  transition: transform var(--ac-duration-base) var(--ac-ease-out-expo);
+}
+
+.skip-link:focus-visible {
+  transform: translateX(-50%) translateY(0);
+  outline: 2px solid var(--ac-text-inverse);
+  outline-offset: 3px;
+}

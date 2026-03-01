@@ -1,0 +1,2735 @@
+/*
+  AutoClipper Design System — components.css
+  ===========================================
+  Component classes for the AutoClipper landing page.
+
+  Naming convention: .ac-[component]--[modifier]
+  All components are self-contained — no deep nesting required.
+  States use CSS :is() and data-attributes, not BEM sub-elements.
+
+  Differentiator at every level:
+  - Buttons use a border-gradient technique instead of flat fills
+  - Cards have a scan-line texture layer (subtle, tool-grade)
+  - Badges reference timecode and waveform monitor aesthetics
+  - Process steps use a connector-line system (like a node graph)
+*/
+
+/* ─── Layout: Container ────────────────────────────────────────────────────── */
+
+.ac-container {
+  width: 100%;
+  max-width: var(--ac-container-xl);
+  margin-inline: auto;
+  padding-inline: var(--ac-space-8);
+}
+
+.ac-container--narrow {
+  max-width: var(--ac-container-md);
+}
+
+.ac-container--wide {
+  max-width: var(--ac-container-2xl);
+}
+
+@media (max-width: 768px) {
+  .ac-container {
+    padding-inline: var(--ac-space-4);
+  }
+}
+
+/* ─── Section ──────────────────────────────────────────────────────────────── */
+/*
+  Each section is a z-plane in the composition.
+  --ac-section-bg allows per-section overrides.
+  The top/bottom border system creates a ruled-paper effect
+  that echoes a timeline's track separation.
+*/
+
+.ac-section {
+  position: relative;
+  padding-block: var(--ac-space-24);
+  background-color: var(--ac-section-bg, transparent);
+  overflow: hidden;
+}
+
+.ac-section--alt {
+  --ac-section-bg: var(--ac-bg-surface);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+.ac-section--hero {
+  padding-block: var(--ac-space-32) var(--ac-space-24);
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+}
+
+.ac-section--tight {
+  padding-block: var(--ac-space-16);
+}
+
+@media (max-width: 768px) {
+  .ac-section {
+    padding-block: var(--ac-space-16);
+  }
+
+  .ac-section--hero {
+    padding-block: var(--ac-space-20) var(--ac-space-16);
+    min-height: 80vh;
+  }
+}
+
+/* ─── Typography: Headings ─────────────────────────────────────────────────── */
+/*
+  Tight tracking at large sizes creates the "stamped" quality
+  you see in professional tool interfaces. It's not decorative —
+  it's structurally considered.
+
+  The gradient treatment on h1 is a deliberate single use.
+  Used more than once, it becomes wallpaper. Used once, it signals.
+*/
+
+.ac-heading {
+  font-family: var(--ac-font-sans);
+  font-weight: var(--ac-weight-bold);
+  line-height: var(--ac-leading-tight);
+  letter-spacing: var(--ac-tracking-tight);
+  color: var(--ac-text-primary);
+}
+
+.ac-heading--display {
+  font-size: clamp(var(--ac-text-3xl), 6vw, var(--ac-text-5xl));
+  font-weight: var(--ac-weight-black);
+  letter-spacing: var(--ac-tracking-tightest);
+  line-height: 1.0;
+  /* Gradient text: the single hero moment */
+  background: linear-gradient(
+    135deg,
+    var(--ac-text-primary) 0%,
+    var(--ac-text-primary) 40%,
+    var(--ac-cyan) 70%,
+    var(--ac-magenta) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ac-heading--h1 {
+  font-size: clamp(var(--ac-text-2xl), 4vw, var(--ac-text-4xl));
+  font-weight: var(--ac-weight-black);
+  letter-spacing: var(--ac-tracking-tight);
+}
+
+.ac-heading--h2 {
+  font-size: clamp(var(--ac-text-xl), 3vw, var(--ac-text-3xl));
+  font-weight: var(--ac-weight-bold);
+  letter-spacing: var(--ac-tracking-snug);
+}
+
+.ac-heading--h3 {
+  font-size: clamp(var(--ac-text-lg), 2.5vw, var(--ac-text-2xl));
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-snug);
+}
+
+.ac-heading--h4 {
+  font-size: var(--ac-text-lg);
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-normal);
+}
+
+/* Section eyebrow — small label above headings */
+.ac-heading--eyebrow {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-widest);
+  text-transform: uppercase;
+  color: var(--ac-cyan);
+  line-height: var(--ac-leading-normal);
+}
+
+/* ─── Typography: Body Text ────────────────────────────────────────────────── */
+
+.ac-text {
+  font-family: var(--ac-font-sans);
+  font-weight: var(--ac-weight-regular);
+  line-height: var(--ac-leading-relaxed);
+  color: var(--ac-text-secondary);
+}
+
+.ac-text--lead {
+  font-size: var(--ac-text-md);
+  line-height: var(--ac-leading-normal);
+  color: var(--ac-text-secondary);
+  max-width: 52ch;
+}
+
+.ac-text--body {
+  font-size: var(--ac-text-base);
+  line-height: var(--ac-leading-relaxed);
+}
+
+.ac-text--small {
+  font-size: var(--ac-text-sm);
+  line-height: var(--ac-leading-normal);
+  color: var(--ac-text-tertiary);
+}
+
+/* Monospace data text — for scores, timestamps, technical values */
+.ac-text--mono {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-cyan);
+  letter-spacing: var(--ac-tracking-wide);
+}
+
+.ac-text--accent-cyan {
+  color: var(--ac-cyan);
+}
+
+.ac-text--accent-magenta {
+  color: var(--ac-magenta);
+}
+
+/* ─── Badge ────────────────────────────────────────────────────────────────── */
+/*
+  Badges reference the status indicators of hardware monitors —
+  the kind you'd see on a professional video switcher.
+  The left-border "LED" is the signature detail.
+*/
+
+.ac-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-wide);
+  text-transform: uppercase;
+  padding: 3px var(--ac-space-2) 3px var(--ac-space-2);
+  border-radius: var(--ac-radius-xs);
+  border: var(--ac-border-width-thin) solid transparent;
+  white-space: nowrap;
+  line-height: 1;
+  position: relative;
+}
+
+/* The LED dot — a signature detail */
+.ac-badge::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ac-badge--cyan {
+  background: var(--ac-cyan-dim);
+  border-color: var(--ac-cyan-subtle);
+  color: var(--ac-cyan);
+}
+
+.ac-badge--cyan::before {
+  background: var(--ac-cyan);
+  box-shadow: 0 0 6px var(--ac-cyan);
+}
+
+.ac-badge--magenta {
+  background: var(--ac-magenta-dim);
+  border-color: var(--ac-magenta-subtle);
+  color: var(--ac-magenta);
+}
+
+.ac-badge--magenta::before {
+  background: var(--ac-magenta);
+  box-shadow: 0 0 6px var(--ac-magenta);
+}
+
+.ac-badge--neutral {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--ac-border-subtle);
+  color: var(--ac-text-secondary);
+}
+
+.ac-badge--neutral::before {
+  background: var(--ac-text-tertiary);
+}
+
+.ac-badge--success {
+  background: var(--ac-success-dim);
+  border-color: rgba(0, 200, 117, 0.2);
+  color: var(--ac-success);
+}
+
+.ac-badge--success::before {
+  background: var(--ac-success);
+  box-shadow: 0 0 6px var(--ac-success);
+}
+
+/* ─── Button ───────────────────────────────────────────────────────────────── */
+/*
+  The primary button uses a border-gradient technique:
+  a transparent border sits above a gradient ::before pseudo-element.
+  This creates a gradient border without hacks — it reacts to hover
+  with a glow shift, not just a color change.
+
+  The ghost button uses a hairline border that shifts from
+  barely-visible to accent-colored on hover — surgical.
+*/
+
+.ac-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ac-space-2);
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  text-decoration: none;
+  border-radius: var(--ac-radius-md);
+  transition: var(--ac-transition-all);
+  -webkit-font-smoothing: antialiased;
+}
+
+.ac-button:focus-visible {
+  outline: 2px solid var(--ac-cyan);
+  outline-offset: 3px;
+}
+
+/* Primary: Solid cyan with deep ambient glow */
+.ac-button--primary {
+  padding: 14px var(--ac-space-6);
+  background: var(--ac-cyan);
+  color: var(--ac-text-inverse);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.5),
+    0 4px 16px rgba(0, 212, 255, 0.3),
+    var(--ac-shadow-inset);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-button--primary:hover {
+    background: var(--ac-cyan-bright);
+    box-shadow:
+      0 0 0 1px rgba(0, 212, 255, 0.8),
+      0 4px 24px rgba(0, 212, 255, 0.5),
+      0 0 48px rgba(0, 212, 255, 0.15),
+      var(--ac-shadow-inset);
+    transform: translateY(-1px);
+  }
+}
+
+.ac-button--primary:active {
+  transform: translateY(0px) scale(0.99);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.4),
+    0 2px 8px rgba(0, 212, 255, 0.2),
+    var(--ac-shadow-inset);
+}
+
+/* Secondary: Dark surface with border, subtly illuminated */
+.ac-button--secondary {
+  padding: 13px var(--ac-space-6);
+  background: var(--ac-bg-elevated);
+  color: var(--ac-text-primary);
+  border: var(--ac-border-width-thin) solid var(--ac-border-default);
+  box-shadow: var(--ac-shadow-sm), var(--ac-shadow-inset);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-button--secondary:hover {
+    border-color: var(--ac-border-strong);
+    background: var(--ac-bg-elevated);
+    box-shadow:
+      var(--ac-shadow-md),
+      var(--ac-shadow-inset),
+      0 0 0 1px var(--ac-border-strong);
+    transform: translateY(-1px);
+  }
+}
+
+.ac-button--secondary:active {
+  transform: translateY(0px);
+  box-shadow: var(--ac-shadow-sm), var(--ac-shadow-inset);
+}
+
+/* Ghost: Near-invisible, reveals on hover */
+.ac-button--ghost {
+  padding: 13px var(--ac-space-6);
+  background: transparent;
+  color: var(--ac-text-secondary);
+  border: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-button--ghost:hover {
+    color: var(--ac-cyan);
+    border-color: var(--ac-cyan-subtle);
+    background: var(--ac-cyan-dim);
+  }
+}
+
+/* Sizes */
+.ac-button--sm {
+  padding: 8px var(--ac-space-3);
+  font-size: var(--ac-text-xs);
+}
+
+.ac-button--lg {
+  padding: 18px var(--ac-space-8);
+  font-size: var(--ac-text-base);
+  border-radius: var(--ac-radius-lg);
+}
+
+.ac-button:disabled,
+.ac-button[aria-disabled="true"] {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ─── Card ─────────────────────────────────────────────────────────────────── */
+/*
+  Cards use a layered construction:
+  1. Dark surface background
+  2. 1px border (structural)
+  3. Top highlight (inset — simulates a light source above)
+  4. On hover: the border illuminates on the side facing the "light"
+
+  The scan-line overlay is optional (data-scanlines attribute)
+  and adds a CRT/video monitor texture.
+*/
+
+.ac-card {
+  position: relative;
+  background: var(--ac-bg-surface);
+  border-radius: var(--ac-radius-lg);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  box-shadow:
+    var(--ac-shadow-md),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: var(--ac-transition-all);
+  overflow: hidden;
+}
+
+/* Top-edge highlight: the "light source" detail */
+.ac-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12) 40%,
+    rgba(255, 255, 255, 0.12) 60%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scan-line texture: subtle CRT effect for data-heavy cards */
+.ac-card[data-scanlines]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-card:hover {
+    border-color: var(--ac-border-default);
+    box-shadow:
+      var(--ac-shadow-lg),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 0 0 1px var(--ac-border-faint);
+    transform: translateY(-2px);
+  }
+}
+
+/* Glow variants — used for highlighted feature cards */
+.ac-card--glow-cyan {
+  border-color: var(--ac-cyan-subtle);
+}
+
+.ac-card--glow-cyan::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 212, 255, 0.2) 40%,
+    rgba(0, 212, 255, 0.2) 60%,
+    transparent
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-card--glow-cyan:hover {
+    border-color: var(--ac-cyan-muted);
+    box-shadow: var(--ac-shadow-cyan-md);
+    transform: translateY(-3px);
+  }
+}
+
+.ac-card--glow-magenta {
+  border-color: var(--ac-magenta-subtle);
+}
+
+.ac-card--glow-magenta::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 0, 128, 0.2) 40%,
+    rgba(255, 0, 128, 0.2) 60%,
+    transparent
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-card--glow-magenta:hover {
+    border-color: var(--ac-magenta-muted);
+    box-shadow: var(--ac-shadow-magenta-md);
+    transform: translateY(-3px);
+  }
+}
+
+/* Card inner padding */
+.ac-card__body {
+  position: relative;
+  z-index: 1;
+  padding: var(--ac-space-6);
+}
+
+.ac-card__body--lg {
+  padding: var(--ac-space-8);
+}
+
+.ac-card__header {
+  position: relative;
+  z-index: 1;
+  padding: var(--ac-space-5) var(--ac-space-6);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+.ac-card__footer {
+  position: relative;
+  z-index: 1;
+  padding: var(--ac-space-4) var(--ac-space-6);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+/* ─── Feature Grid ─────────────────────────────────────────────────────────── */
+/*
+  Not a uniform grid — the first item spans more columns
+  to create visual hierarchy. This is a grid with intention.
+*/
+
+.ac-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--ac-space-4);
+  margin-top: var(--ac-space-10);
+}
+
+/* Default: each feature occupies 4 columns (3-up) */
+.ac-feature-grid > * {
+  grid-column: span 4;
+}
+
+/* First child: prominent/hero feature */
+.ac-feature-grid > *:first-child {
+  grid-column: span 8;
+}
+
+/* Two-column variant */
+.ac-feature-grid--2col > * {
+  grid-column: span 6;
+}
+
+.ac-feature-grid--2col > *:first-child {
+  grid-column: span 6;
+}
+
+/* Uniform 3-column variant */
+.ac-feature-grid--uniform > * {
+  grid-column: span 4;
+}
+
+.ac-feature-grid--uniform > *:first-child {
+  grid-column: span 4;
+}
+
+@media (max-width: 1024px) {
+  .ac-feature-grid > *,
+  .ac-feature-grid > *:first-child {
+    grid-column: span 6;
+  }
+}
+
+@media (max-width: 640px) {
+  .ac-feature-grid > *,
+  .ac-feature-grid > *:first-child,
+  .ac-feature-grid--2col > *,
+  .ac-feature-grid--uniform > * {
+    grid-column: span 12;
+  }
+}
+
+/* ─── Process Step ─────────────────────────────────────────────────────────── */
+/*
+  Numbered steps styled like a node graph or timeline track.
+  The connector line between steps echoes a timeline's in/out markers.
+  Numbers use JetBrains Mono — they are computed ordinals, not copy.
+*/
+
+.ac-process-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  margin-top: var(--ac-space-10);
+}
+
+.ac-process-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: var(--ac-space-6);
+  position: relative;
+  padding-bottom: var(--ac-space-8);
+}
+
+/* The connector line between steps */
+.ac-process-step:not(:last-child) .ac-process-step__connector {
+  position: absolute;
+  left: 23px;
+  top: 48px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--ac-border-default),
+    var(--ac-border-faint)
+  );
+}
+
+/* The number node */
+.ac-process-step__number {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-cyan);
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-sm);
+  letter-spacing: var(--ac-tracking-normal);
+  box-shadow:
+    var(--ac-shadow-sm),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  position: relative;
+  z-index: 1;
+}
+
+/* Active step: illuminated node */
+.ac-process-step--active .ac-process-step__number {
+  background: var(--ac-cyan-dim);
+  border-color: var(--ac-cyan-subtle);
+  color: var(--ac-cyan);
+  box-shadow: var(--ac-shadow-cyan-sm);
+}
+
+.ac-process-step__content {
+  padding-top: var(--ac-space-2);
+}
+
+.ac-process-step__title {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-base);
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-text-primary);
+  margin-bottom: var(--ac-space-2);
+  letter-spacing: var(--ac-tracking-snug);
+}
+
+.ac-process-step__description {
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-secondary);
+  line-height: var(--ac-leading-relaxed);
+  max-width: 44ch;
+}
+
+/* Horizontal layout variant */
+.ac-process-steps--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--ac-space-4);
+}
+
+.ac-process-steps--horizontal .ac-process-step {
+  flex: 1;
+  grid-template-columns: 1fr;
+  grid-template-rows: 48px 1fr;
+  padding-bottom: 0;
+  gap: var(--ac-space-4);
+  text-align: left;
+}
+
+.ac-process-steps--horizontal .ac-process-step:not(:last-child) .ac-process-step__connector {
+  left: 48px;
+  right: calc(-1 * var(--ac-space-4));
+  top: 23px;
+  bottom: auto;
+  width: auto;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--ac-border-default),
+    var(--ac-border-faint)
+  );
+  /* Connector line animation: grows from left to right on reveal */
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform var(--ac-duration-reveal) var(--ac-ease-out-expo);
+}
+
+/* Animate connectors when parent group is revealed */
+[data-reveal-group].is-visible .ac-process-step:nth-child(1) .ac-process-step__connector {
+  transform: scaleX(1);
+  transition-delay: 200ms;
+}
+
+[data-reveal-group].is-visible .ac-process-step:nth-child(2) .ac-process-step__connector {
+  transform: scaleX(1);
+  transition-delay: 400ms;
+}
+
+/* Active step number: subtle continuous glow */
+.ac-process-step--active .ac-process-step__number {
+  animation: ac-process-glow 3s var(--ac-ease-cinematic) infinite;
+}
+
+@keyframes ac-process-glow {
+  0%, 100% {
+    box-shadow: var(--ac-shadow-cyan-sm);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px var(--ac-cyan-subtle),
+      0 0 24px var(--ac-cyan-glow),
+      0 4px 16px rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .ac-process-steps--horizontal {
+    flex-direction: column;
+  }
+
+  .ac-process-steps--horizontal .ac-process-step {
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: auto;
+    padding-bottom: var(--ac-space-8);
+  }
+
+  .ac-process-steps--horizontal .ac-process-step:not(:last-child) .ac-process-step__connector {
+    left: 23px;
+    top: 48px;
+    right: auto;
+    bottom: 0;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(
+      to bottom,
+      var(--ac-border-default),
+      var(--ac-border-faint)
+    );
+  }
+}
+
+/* ─── CTA Block ────────────────────────────────────────────────────────────── */
+/*
+  The CTA container creates an ambient focus zone.
+  It's not a box — it's an illuminated surface, as if a spotlight
+  from above is hitting just this portion of the page.
+  The radial gradient emanates from the top-center.
+*/
+
+.ac-cta-block {
+  position: relative;
+  text-align: center;
+  padding: var(--ac-space-10) var(--ac-space-8) var(--ac-space-4);
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ac-space-3);
+}
+
+/* The ambient light from above — subtle breathing spotlight */
+.ac-cta-block::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 160%;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(0, 212, 255, 0.05) 0%,
+    rgba(0, 212, 255, 0.015) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+  animation: ac-cta-spotlight 5s var(--ac-ease-cinematic) infinite;
+}
+
+@keyframes ac-cta-spotlight {
+  0%, 100% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.03);
+  }
+}
+
+/* Hairline top rule */
+.ac-cta-block::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ac-cyan-subtle) 30%,
+    var(--ac-cyan-subtle) 70%,
+    transparent
+  );
+}
+
+.ac-cta-block__actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ac-space-4);
+  flex-wrap: wrap;
+  margin-top: var(--ac-space-8);
+}
+
+.ac-cta-block__subtext {
+  margin-top: var(--ac-space-4);
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-tertiary);
+  font-family: var(--ac-font-mono);
+  letter-spacing: var(--ac-tracking-wide);
+}
+
+@media (max-width: 640px) {
+  .ac-cta-block {
+    padding: var(--ac-space-16) var(--ac-space-4);
+  }
+
+  .ac-cta-block__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* ─── Score Display ────────────────────────────────────────────────────────── */
+/*
+  Specific to AutoClipper's core concept: the viral score.
+  Styled like a hardware meter — the kind on a professional
+  audio/video rack unit. Monospace, high-contrast, purposeful.
+*/
+
+.ac-score {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ac-space-1);
+}
+
+.ac-score__value {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-4xl);
+  font-weight: var(--ac-weight-bold);
+  line-height: 1;
+  letter-spacing: var(--ac-tracking-tightest);
+  color: var(--ac-cyan);
+  text-shadow: 0 0 24px rgba(0, 212, 255, 0.4);
+}
+
+.ac-score__label {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-widest);
+  text-transform: uppercase;
+  color: var(--ac-text-tertiary);
+}
+
+/* Score bar: the meter fill */
+.ac-score-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--ac-bg-elevated);
+  border-radius: var(--ac-radius-pill);
+  overflow: hidden;
+  position: relative;
+}
+
+.ac-score-bar__fill {
+  height: 100%;
+  border-radius: var(--ac-radius-pill);
+  background: linear-gradient(90deg, var(--ac-cyan) 0%, var(--ac-magenta) 100%);
+  box-shadow: 0 0 8px var(--ac-cyan-glow);
+  transition: width var(--ac-duration-slow) var(--ac-ease-out-expo);
+  /* Start at 0 width, driven to target via --score-width on reveal */
+  width: 0%;
+}
+
+/* When the parent reveal group becomes visible, fill to target width */
+[data-reveal].is-visible .ac-score-bar__fill,
+[data-reveal-group].is-visible .ac-score-bar__fill {
+  width: var(--score-width, 0%);
+  transition-delay: calc(400ms + (var(--factor-i, 0) * 60ms));
+}
+
+/* ─── Divider ──────────────────────────────────────────────────────────────── */
+
+.ac-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ac-border-subtle) 20%,
+    var(--ac-border-subtle) 80%,
+    transparent
+  );
+  border: none;
+  margin-block: var(--ac-space-8);
+}
+
+/* ─── Inline Code / Mono Label ─────────────────────────────────────────────── */
+
+.ac-code {
+  font-family: var(--ac-font-mono);
+  font-size: 0.875em;
+  font-weight: var(--ac-weight-medium);
+  padding: 2px 6px;
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-xs);
+  color: var(--ac-cyan);
+  letter-spacing: var(--ac-tracking-normal);
+}
+
+/* ─── Nav ──────────────────────────────────────────────────────────────────── */
+
+.ac-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--ac-z-sticky);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--ac-space-3) var(--ac-space-8);
+  background: transparent;
+  backdrop-filter: blur(0px) saturate(1);
+  -webkit-backdrop-filter: blur(0px) saturate(1);
+  border-bottom: var(--ac-border-width-thin) solid transparent;
+  box-shadow: none;
+  transition:
+    border-color var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    background-color var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    backdrop-filter var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    -webkit-backdrop-filter var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    box-shadow var(--ac-duration-moderate) var(--ac-ease-out-expo);
+}
+
+.ac-nav--scrolled {
+  background: var(--ac-bg-overlay);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border-bottom-color: var(--ac-border-subtle);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+}
+
+.ac-nav__logo {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-base);
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-normal);
+  color: var(--ac-text-primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+}
+
+.ac-nav__logo-mark {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, var(--ac-cyan), var(--ac-magenta));
+  border-radius: var(--ac-radius-xs);
+  flex-shrink: 0;
+}
+
+.ac-nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-6);
+  list-style: none;
+}
+
+.ac-nav__link {
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-text-secondary);
+  text-decoration: none;
+  letter-spacing: var(--ac-tracking-normal);
+  transition: var(--ac-transition-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-nav__link:hover {
+    color: var(--ac-text-primary);
+  }
+}
+
+@media (max-width: 768px) {
+  .ac-nav {
+    padding: var(--ac-space-3) var(--ac-space-4);
+  }
+
+  .ac-nav__links {
+    display: none;
+  }
+}
+
+/* ─── Stat / Metric Display ────────────────────────────────────────────────── */
+
+.ac-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-1);
+}
+
+.ac-stat__value {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-3xl);
+  font-weight: var(--ac-weight-bold);
+  color: var(--ac-text-primary);
+  line-height: 1;
+  letter-spacing: var(--ac-tracking-tight);
+}
+
+.ac-stat__label {
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-secondary);
+  line-height: var(--ac-leading-normal);
+}
+
+.ac-stat__value--cyan {
+  color: var(--ac-cyan);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.ac-stat__value--magenta {
+  color: var(--ac-magenta);
+  text-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+}
+
+/* ─── Feature Icon Slot ────────────────────────────────────────────────────── */
+/*
+  Icon containers styled like indicator LEDs on rack equipment.
+  Not circles — squares with controlled radius. Professional, not playful.
+*/
+
+.ac-icon-slot {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ac-radius-sm);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  background: var(--ac-bg-elevated);
+  flex-shrink: 0;
+  transition: var(--ac-transition-all);
+}
+
+.ac-icon-slot--cyan {
+  border-color: var(--ac-cyan-subtle);
+  background: var(--ac-cyan-dim);
+  color: var(--ac-cyan);
+}
+
+.ac-icon-slot--magenta {
+  border-color: var(--ac-magenta-subtle);
+  background: var(--ac-magenta-dim);
+  color: var(--ac-magenta);
+}
+
+/* ─── Tag Row (factor list) ────────────────────────────────────────────────── */
+
+.ac-tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ac-space-2);
+  align-items: center;
+}
+
+.ac-tag {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-wide);
+  padding: 4px var(--ac-space-2);
+  border-radius: var(--ac-radius-xs);
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  color: var(--ac-text-tertiary);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Stagger animation for tags — appear one by one when parent card is revealed */
+.ac-tag--stagger {
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity var(--ac-duration-base) var(--ac-ease-out-expo),
+    transform var(--ac-duration-base) var(--ac-ease-out-expo);
+  transition-delay: calc(800ms + (var(--tag-i, 0) * 40ms));
+}
+
+[data-reveal].is-visible .ac-tag--stagger {
+  opacity: 1;
+  transform: none;
+}
+
+/* ─── Heading Aliases (components use --N, CSS defined --hN) ──────────── */
+
+.ac-heading--1 {
+  font-size: clamp(var(--ac-text-2xl), 4vw, var(--ac-text-4xl));
+  font-weight: var(--ac-weight-black);
+  letter-spacing: var(--ac-tracking-tight);
+}
+
+.ac-heading--2 {
+  font-size: clamp(var(--ac-text-xl), 3vw, var(--ac-text-3xl));
+  font-weight: var(--ac-weight-bold);
+  letter-spacing: var(--ac-tracking-snug);
+}
+
+.ac-heading--3 {
+  font-size: clamp(var(--ac-text-lg), 2.5vw, var(--ac-text-2xl));
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-snug);
+}
+
+.ac-heading--4 {
+  font-size: var(--ac-text-lg);
+  font-weight: var(--ac-weight-semibold);
+  letter-spacing: var(--ac-tracking-normal);
+}
+
+/* ─── Text Utilities ──────────────────────────────────────────────────── */
+
+.ac-text--center {
+  text-align: center;
+}
+
+.ac-highlight {
+  color: var(--ac-cyan);
+}
+
+/* ─── Section Inner (container alias) ─────────────────────────────────── */
+
+.ac-section__inner {
+  width: 100%;
+  max-width: var(--ac-container-xl);
+  margin-inline: auto;
+  padding-inline: var(--ac-space-8);
+}
+
+@media (max-width: 768px) {
+  .ac-section__inner {
+    padding-inline: var(--ac-space-4);
+  }
+}
+
+/* ─── Section Variants ────────────────────────────────────────────────── */
+
+.ac-section--accent {
+  --ac-section-bg: var(--ac-bg-surface);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+.ac-section--cta {
+  padding-block: var(--ac-space-20);
+}
+
+/* ─── Button Alias ────────────────────────────────────────────────────── */
+
+.ac-button--large {
+  padding: 18px var(--ac-space-8);
+  font-size: var(--ac-text-base);
+  border-radius: var(--ac-radius-lg);
+}
+
+/* ─── Scroll Reveal (class-based) ─────────────────────────────────────── */
+
+.ac-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--ac-duration-reveal) var(--ac-ease-out-expo),
+    transform var(--ac-duration-reveal) var(--ac-ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.ac-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ac-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
+
+/* ─── Process (alias for ac-process-steps) ────────────────────────────── */
+
+.ac-process {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* ─── Pain Grid ───────────────────────────────────────────────────────── */
+
+.ac-pain-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ac-space-4);
+  margin-top: var(--ac-space-10);
+}
+
+@media (max-width: 768px) {
+  .ac-pain-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Solution Grid ───────────────────────────────────────────────────── */
+
+.ac-solution-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ac-space-4);
+  margin-top: var(--ac-space-10);
+}
+
+@media (max-width: 768px) {
+  .ac-solution-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Card Variants (padding for different contexts) ──────────────────── */
+
+.ac-card--pain,
+.ac-card--feature,
+.ac-card--solution {
+  padding: var(--ac-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-3);
+}
+
+/* ─── Hero Section ────────────────────────────────────────────────────── */
+
+.ac-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ac-space-12);
+  align-items: center;
+  width: 100%;
+  max-width: var(--ac-container-xl);
+  margin-inline: auto;
+  padding-inline: var(--ac-space-8);
+  min-height: 92vh;
+  padding-block: var(--ac-space-32) var(--ac-space-20);
+}
+
+@media (max-width: 1024px) {
+  .ac-hero {
+    grid-template-columns: 1fr;
+    gap: var(--ac-space-10);
+    padding-block: var(--ac-space-20) var(--ac-space-12);
+    min-height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .ac-hero {
+    padding-inline: var(--ac-space-4);
+  }
+}
+
+.ac-hero__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-5);
+}
+
+.ac-hero__sub {
+  font-size: var(--ac-text-md);
+  line-height: var(--ac-leading-relaxed);
+  color: var(--ac-text-secondary);
+  max-width: 48ch;
+}
+
+.ac-hero__actions {
+  display: flex;
+  gap: var(--ac-space-3);
+  flex-wrap: wrap;
+  margin-top: var(--ac-space-2);
+}
+
+.ac-hero__note {
+  margin-top: var(--ac-space-1);
+}
+
+.ac-hero__visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Ambient glow — positioned behind the wizard, CSS-driven */
+.ac-hero-glow {
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1024px) {
+  .ac-hero__visual {
+    order: -1;
+    max-width: 520px;
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+/* ─── Hero Mockup (the fake plugin UI) ────────────────────────────────── */
+
+.ac-hero__mockup {
+  width: 100%;
+  max-width: 440px;
+  background: var(--ac-bg-surface);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-lg);
+  box-shadow: var(--ac-shadow-xl);
+  overflow: hidden;
+}
+
+.ac-mockup__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+  padding: var(--ac-space-2) var(--ac-space-3);
+  background: var(--ac-bg-elevated);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+}
+
+.ac-mockup__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ac-border-default);
+}
+
+.ac-mockup__dot:nth-child(1) { background: #ff5f57; }
+.ac-mockup__dot:nth-child(2) { background: #ffbd2e; }
+.ac-mockup__dot:nth-child(3) { background: #28c840; }
+
+.ac-mockup__title {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  margin-left: var(--ac-space-2);
+  letter-spacing: var(--ac-tracking-wide);
+}
+
+.ac-mockup__body {
+  padding: var(--ac-space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-2);
+}
+
+.ac-mockup__clip {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--ac-space-3);
+  align-items: start;
+  padding: var(--ac-space-3);
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-md);
+  transition: var(--ac-transition-all);
+}
+
+.ac-mockup__clip:first-child {
+  border-color: var(--ac-cyan-subtle);
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.08);
+}
+
+.ac-mockup__clip--secondary {
+  opacity: 0.7;
+}
+
+.ac-mockup__clip--tertiary {
+  opacity: 0.45;
+}
+
+.ac-mockup__score {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-base);
+  font-weight: var(--ac-weight-bold);
+  color: var(--ac-cyan);
+  background: var(--ac-cyan-dim);
+  border: var(--ac-border-width-thin) solid var(--ac-cyan-subtle);
+  border-radius: var(--ac-radius-sm);
+}
+
+.ac-mockup__clip-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ac-mockup__clip-title {
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ac-mockup__clip-time {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-wide);
+}
+
+.ac-mockup__factors {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--ac-space-1);
+  flex-wrap: wrap;
+  margin-top: var(--ac-space-1);
+}
+
+.ac-factor {
+  font-family: var(--ac-font-mono);
+  font-size: 10px;
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-wide);
+  padding: 2px 6px;
+  border-radius: var(--ac-radius-xs);
+  background: var(--ac-bg-surface);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  color: var(--ac-text-secondary);
+}
+
+/* ─── Footer ──────────────────────────────────────────────────────────── */
+
+.ac-footer {
+  padding-block: var(--ac-space-12);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  background: var(--ac-bg-void);
+}
+
+.ac-footer__inner {
+  width: 100%;
+  max-width: var(--ac-container-xl);
+  margin-inline: auto;
+  padding-inline: var(--ac-space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-6);
+  align-items: center;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .ac-footer__inner {
+    padding-inline: var(--ac-space-4);
+  }
+}
+
+.ac-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-2);
+  align-items: center;
+}
+
+.ac-footer__logo {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-base);
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-text-primary);
+  letter-spacing: var(--ac-tracking-normal);
+}
+
+.ac-footer__links {
+  display: flex;
+  gap: var(--ac-space-6);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ac-footer__link {
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-secondary);
+  text-decoration: none;
+  transition: var(--ac-transition-color);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ac-footer__link:hover {
+    color: var(--ac-cyan);
+  }
+}
+
+.ac-footer__copy {
+  padding-top: var(--ac-space-4);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRODUCT-SPECIFIC COMPONENTS
+   Section 2 — Unique, non-generic UI patterns for AutoClipper's landing page.
+   These components replace generic card grids with purpose-built visualizations
+   that communicate the product's core value directly through their form.
+
+   Every component below uses only tokens defined in tokens.css.
+   Dark theme always. Cyan = AI signal. Magenta = viral heat.
+   JetBrains Mono = computed data. Inter = human prose.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 1. Wizard Steps (.ac-wizard) ────────────────────────────────────────── */
+/*
+  DeploClaw-inspired onboarding wizard for the hero right column.
+  A vertical card that simulates a real configuration flow —
+  communicating "this tool is thoughtful and guided" before the user
+  even reads a word of copy.
+
+  Step states:
+    pending   — muted, structurally present, not yet active
+    active    — cyan border + glow, expanded content visible
+    completed — collapsed, checkmark replaces number, step recedes
+
+  The card itself is a dark surface sitting one level above bg-base,
+  consistent with the z-plane system. The active step's left-border
+  illumination echoes a timeline's playhead indicator.
+*/
+
+.ac-wizard {
+  background: var(--ac-bg-surface);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-lg);
+  box-shadow:
+    var(--ac-shadow-xl),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+/* Top-edge highlight — inherits from .ac-card's light-source logic */
+.ac-wizard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.10) 40%,
+    rgba(255, 255, 255, 0.10) 60%,
+    transparent
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ac-wizard__header {
+  padding: var(--ac-space-4) var(--ac-space-5);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  background: var(--ac-bg-elevated);
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-3);
+}
+
+/* Traffic-light dots — macOS window chrome, signals this is a "tool" */
+.ac-wizard__header::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5f57;
+  box-shadow: 16px 0 0 #ffbd2e, 32px 0 0 #28c840;
+  flex-shrink: 0;
+}
+
+.ac-wizard__header-title {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-wide);
+  margin-left: var(--ac-space-8); /* clears the pseudo-element dots */
+}
+
+.ac-wizard__steps {
+  display: flex;
+  flex-direction: column;
+  padding: var(--ac-space-3);
+  gap: var(--ac-space-1);
+}
+
+/* Individual step — the structural unit */
+.ac-wizard__step {
+  position: relative;
+  border-radius: var(--ac-radius-md);
+  border: var(--ac-border-width-thin) solid transparent;
+  background: transparent;
+  padding: var(--ac-space-3);
+  transition: var(--ac-transition-all);
+  overflow: hidden;
+}
+
+/* Pending: structurally present, visually receded */
+.ac-wizard__step--pending {
+  border-color: transparent;
+  opacity: 0.55;
+}
+
+/* Active: this is the live step — the playhead */
+.ac-wizard__step--active {
+  background: var(--ac-cyan-dim);
+  border-color: var(--ac-cyan-subtle);
+  box-shadow:
+    0 0 0 1px rgba(0, 212, 255, 0.10),
+    0 0 20px rgba(0, 212, 255, 0.08),
+    inset 0 1px 0 rgba(0, 212, 255, 0.08);
+  opacity: 1;
+}
+
+/* Active: left-edge illumination — the timeline playhead indicator */
+.ac-wizard__step--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12%;
+  bottom: 12%;
+  width: 2px;
+  background: var(--ac-cyan);
+  border-radius: 0 var(--ac-radius-xs) var(--ac-radius-xs) 0;
+  box-shadow: 0 0 8px var(--ac-cyan-glow);
+}
+
+/* Completed: collapsed, receded — done, move on */
+.ac-wizard__step--completed {
+  border-color: var(--ac-border-faint);
+  background: transparent;
+  opacity: 0.75;
+  padding-block: var(--ac-space-2);
+}
+
+/* Step header row: number + title (always visible) */
+.ac-wizard__step-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-3);
+}
+
+/* The step number node — mirrors .ac-process-step__number */
+.ac-wizard__step-number {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-semibold);
+  color: var(--ac-text-tertiary);
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-xs);
+  letter-spacing: var(--ac-tracking-normal);
+  flex-shrink: 0;
+  transition: var(--ac-transition-all);
+}
+
+/* Active step number: illuminated */
+.ac-wizard__step--active .ac-wizard__step-number {
+  color: var(--ac-cyan);
+  background: var(--ac-cyan-dim);
+  border-color: var(--ac-cyan-subtle);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.20);
+}
+
+/* Completed step number: replaced by checkmark slot */
+.ac-wizard__step--completed .ac-wizard__step-number {
+  color: var(--ac-success);
+  background: var(--ac-success-dim);
+  border-color: rgba(0, 200, 117, 0.20);
+  font-size: 0; /* hide the number text */
+  position: relative;
+}
+
+/* Checkmark inside the completed number slot — via pseudo */
+.ac-wizard__step--completed .ac-wizard__step-number::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2.5 6L5 8.5L9.5 4' stroke='%2300C875' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+.ac-wizard__step-title {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-text-secondary);
+  letter-spacing: var(--ac-tracking-snug);
+  line-height: var(--ac-leading-snug);
+  transition: color var(--ac-duration-fast) var(--ac-ease-out-expo);
+}
+
+.ac-wizard__step--active .ac-wizard__step-title {
+  color: var(--ac-text-primary);
+  font-weight: var(--ac-weight-semibold);
+}
+
+.ac-wizard__step--completed .ac-wizard__step-title {
+  color: var(--ac-text-tertiary);
+  text-decoration: line-through;
+  text-decoration-color: var(--ac-border-default);
+}
+
+/*
+  Expandable content area — animated via CSS grid rows.
+  The wrapper (.ac-wizard__step-expand) uses grid-template-rows
+  transitioning from 0fr to 1fr. This provides smooth height
+  animation without JS measurement or fixed heights.
+  The inner content (.ac-wizard__step-content) fades in with a
+  slight delay so the expand completes before content appears.
+*/
+.ac-wizard__step-expand {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--ac-duration-moderate) var(--ac-ease-out-expo);
+}
+
+.ac-wizard__step--active .ac-wizard__step-expand {
+  grid-template-rows: 1fr;
+}
+
+.ac-wizard__step-content {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-2);
+  /* Content fade — starts invisible, appears after expand begins */
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--ac-duration-base) var(--ac-ease-out-expo),
+    transform var(--ac-duration-base) var(--ac-ease-out-expo);
+  transition-delay: 0ms;
+}
+
+.ac-wizard__step--active .ac-wizard__step-content {
+  margin-top: var(--ac-space-3);
+  padding-top: var(--ac-space-3);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  opacity: 1;
+  transform: none;
+  transition-delay: 120ms;
+}
+
+/* Clip card stagger animation in step 4 */
+.ac-wizard__step--active .ac-wizard__clip-stagger {
+  animation: ac-slide-up var(--ac-duration-moderate) var(--ac-ease-out-expo) both;
+  animation-delay: calc(180ms + (var(--clip-i, 0) * 80ms));
+}
+
+/* Progress bar at the bottom of the wizard */
+.ac-wizard__progress-bar {
+  height: 2px;
+  background: var(--ac-border-faint);
+  overflow: hidden;
+}
+
+.ac-wizard__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ac-cyan), var(--ac-cyan-bright));
+  box-shadow: 0 0 8px var(--ac-cyan-glow);
+  transition: width var(--ac-duration-moderate) var(--ac-ease-out-expo);
+  border-radius: 0 var(--ac-radius-pill) var(--ac-radius-pill) 0;
+}
+
+/* The input field — dark bg, cyan focus, cursor blink signal */
+.ac-wizard__input {
+  width: 100%;
+  background: var(--ac-bg-void);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-sm);
+  padding: var(--ac-space-2) var(--ac-space-3);
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-regular);
+  color: var(--ac-text-primary);
+  letter-spacing: var(--ac-tracking-normal);
+  line-height: var(--ac-leading-normal);
+  outline: none;
+  transition:
+    border-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    box-shadow var(--ac-duration-base) var(--ac-ease-out-expo);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ac-wizard__input::placeholder {
+  color: var(--ac-text-tertiary);
+  font-weight: var(--ac-weight-regular);
+}
+
+.ac-wizard__input:focus {
+  border-color: var(--ac-cyan-muted);
+  box-shadow:
+    0 0 0 1px var(--ac-cyan-subtle),
+    0 0 12px rgba(0, 212, 255, 0.12);
+  caret-color: var(--ac-cyan);
+}
+
+/* Instruction text inside a step */
+.ac-wizard__step-hint {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  line-height: var(--ac-leading-relaxed);
+}
+
+/* Wizard footer — action area */
+.ac-wizard__footer {
+  padding: var(--ac-space-3) var(--ac-space-4) var(--ac-space-4);
+  border-top: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ac-space-3);
+}
+
+.ac-wizard__progress {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-wide);
+}
+
+.ac-wizard__progress-accent {
+  color: var(--ac-cyan);
+}
+
+@media (max-width: 1024px) {
+  .ac-wizard {
+    max-width: 100%;
+  }
+}
+
+
+/* Structural wrapper for transcript lines */
+.ac-transcript__lines {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── 2. Transcript Wall (.ac-transcript) ─────────────────────────────────── */
+/*
+  The "aguja en pajar" pain visualization.
+  A wall of dense transcript lines — overwhelming by design.
+  Timestamps in mono, text faded and hard to scan.
+  One line glows: the viral moment that was nearly lost.
+  The overall effect must feel like scrolling through a 3-hour
+  recording looking for a 15-second clip.
+
+  Implementation notes:
+  - repeating-linear-gradient scan lines add CRT monitor texture
+  - The ::after pseudo creates a vertical fade at the bottom
+    (the transcript extends beyond view — it's infinite)
+  - The highlight line cuts through the noise with cyan glow
+*/
+
+.ac-transcript {
+  position: relative;
+  background: var(--ac-bg-void);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-lg);
+  overflow: hidden;
+  font-family: var(--ac-font-mono);
+
+  /* CRT scan-line texture — identical logic to .ac-card[data-scanlines] */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.12) 3px,
+    rgba(0, 0, 0, 0.12) 4px
+  );
+}
+
+/* Bottom fade: the transcript disappears into the void */
+.ac-transcript::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--ac-bg-void)
+  );
+  pointer-events: none;
+  z-index: var(--ac-z-raised);
+}
+
+/* Individual transcript line — staggered reveal on scroll */
+.ac-transcript__line {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: var(--ac-space-3);
+  align-items: baseline;
+  padding: 5px var(--ac-space-4);
+  border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  transition: background var(--ac-duration-fast) var(--ac-ease-out-expo);
+  position: relative;
+
+  /* Staggered reveal: lines start invisible, appear when parent is revealed */
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    opacity var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    transform var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    background var(--ac-duration-fast) var(--ac-ease-out-expo);
+  transition-delay: calc(var(--line-i, 0) * 40ms);
+}
+
+/* When parent transcript is revealed via scroll, lines cascade in */
+[data-reveal].is-visible .ac-transcript__line,
+.is-visible .ac-transcript__line {
+  opacity: 1;
+  transform: none;
+}
+
+/* Timestamp column — computed, machine-generated */
+.ac-transcript__timestamp {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-regular);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-normal);
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Transcript text — purposefully hard to scan */
+.ac-transcript__text {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-regular);
+  color: var(--ac-text-tertiary);
+  line-height: var(--ac-leading-relaxed);
+  opacity: 0.7;
+}
+
+/*
+  The highlighted line — the viral moment buried in the wall.
+  It should feel like a search result in a dark terminal:
+  one line suddenly alive while everything around it is dead.
+*/
+.ac-transcript__line--highlight {
+  background: rgba(0, 212, 255, 0.04);
+  border-color: transparent;
+  border-left: 2px solid var(--ac-cyan);
+  box-shadow:
+    inset 0 0 40px rgba(0, 212, 255, 0.04),
+    0 0 0 1px rgba(0, 212, 255, 0.08);
+}
+
+.ac-transcript__line--highlight .ac-transcript__timestamp {
+  color: var(--ac-cyan-muted);
+}
+
+.ac-transcript__line--highlight .ac-transcript__text {
+  color: var(--ac-text-primary);
+  opacity: 1;
+  font-weight: var(--ac-weight-medium);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+/* Subtle glow pulse on the highlighted viral moment */
+.ac-transcript__line--highlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 212, 255, 0.03);
+  pointer-events: none;
+  animation: ac-highlight-breathe 3s var(--ac-ease-cinematic) infinite;
+}
+
+@keyframes ac-highlight-breathe {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.02);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: inset 0 0 40px rgba(0, 212, 255, 0.06);
+  }
+}
+
+/*
+  The "lost" overlay — the user's cursor is everywhere, nowhere.
+  An absolute-positioned indicator showing cognitive overload.
+  Rendered as a semi-transparent overlay with scattered question marks
+  or a "searching..." label in the corner.
+*/
+.ac-transcript__lost {
+  position: absolute;
+  bottom: var(--ac-space-6);
+  right: var(--ac-space-4);
+  z-index: calc(var(--ac-z-raised) + 1);
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-sm);
+  padding: var(--ac-space-2) var(--ac-space-3);
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-wide);
+  box-shadow: var(--ac-shadow-sm);
+  pointer-events: none;
+  animation: ac-pulse-glow 3s var(--ac-ease-cinematic) infinite;
+}
+
+/* The blinking dot before the "lost" label */
+.ac-transcript__lost::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ac-warning);
+  box-shadow: 0 0 6px var(--ac-warning);
+  flex-shrink: 0;
+  animation: ac-pulse-glow 1.6s step-end infinite;
+}
+
+/* Scroll region — limits visible height, hints at infinite content */
+.ac-transcript--scrollable {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ac-border-subtle) transparent;
+}
+
+.ac-transcript--scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ac-transcript--scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ac-transcript--scrollable::-webkit-scrollbar-thumb {
+  background: var(--ac-border-subtle);
+  border-radius: var(--ac-radius-pill);
+}
+
+
+/* ─── 3. Before/After Panel (.ac-before-after) ─────────────────────────────── */
+/*
+  Split panel showing the before/after transformation.
+  NOT two cards — a single unified panel where the divide IS the message.
+
+  Before side: desaturated, low contrast, heavy — communicates weight and chaos.
+  After side: illuminated, cyan-accented, light — communicates clarity and speed.
+
+  The divider between them is the product's value proposition made visual.
+  An arrow or "→" in the center is optional (placed via a pseudo-element).
+*/
+
+.ac-before-after {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: var(--ac-border-width-thin) solid var(--ac-border-subtle);
+  border-radius: var(--ac-radius-xl);
+  overflow: hidden;
+  box-shadow: var(--ac-shadow-lg);
+  position: relative;
+}
+
+/* Center divider arrow — the moment of transformation */
+.ac-before-after::before {
+  content: '→';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--ac-z-raised);
+  width: 36px;
+  height: 36px;
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-default);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ac-text-sm);
+  color: var(--ac-text-secondary);
+  box-shadow: var(--ac-shadow-md);
+
+  /* Centering a pseudo-element with content requires flex — use grid trick */
+  display: grid;
+  place-items: center;
+}
+
+.ac-before-after__side {
+  padding: var(--ac-space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-4);
+  position: relative;
+}
+
+/* Before side: muted, heavy, desaturated */
+.ac-before-after__side--before {
+  background: var(--ac-bg-void);
+  border-right: var(--ac-border-width-thin) solid var(--ac-border-faint);
+  filter: saturate(0.6);
+}
+
+/* After side: illuminated, product-state */
+.ac-before-after__side--after {
+  background: var(--ac-bg-surface);
+  position: relative;
+}
+
+/* Subtle cyan ambient glow on the after side */
+.ac-before-after__side--after::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ac-cyan-subtle) 30%,
+    var(--ac-cyan-subtle) 70%,
+    transparent
+  );
+}
+
+.ac-before-after__side--after::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(0, 212, 255, 0.04) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+/* ANTES / DESPUES label */
+.ac-before-after__label {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  letter-spacing: var(--ac-tracking-widest);
+  text-transform: uppercase;
+  color: var(--ac-text-tertiary);
+  line-height: 1;
+}
+
+.ac-before-after__side--after .ac-before-after__label {
+  color: var(--ac-cyan-muted);
+}
+
+/* Metrics container */
+.ac-before-after__metrics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-4);
+}
+
+/* Individual metric row — the measured delta */
+.ac-before-after__metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-1);
+}
+
+.ac-before-after__metric-value {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xl);
+  font-weight: var(--ac-weight-bold);
+  color: var(--ac-text-secondary);
+  line-height: 1;
+  letter-spacing: var(--ac-tracking-tight);
+}
+
+.ac-before-after__side--after .ac-before-after__metric-value {
+  color: var(--ac-text-primary);
+  text-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+.ac-before-after__metric-label {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  line-height: var(--ac-leading-normal);
+}
+
+.ac-before-after__side--after .ac-before-after__metric-label {
+  color: var(--ac-text-secondary);
+}
+
+/* Optional: metric with a delta indicator (the change amount) */
+.ac-before-after__metric-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-success);
+  letter-spacing: var(--ac-tracking-normal);
+}
+
+/* Staggered metric reveal inside before/after panels */
+.ac-before-after__metric--stagger {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    transform var(--ac-duration-moderate) var(--ac-ease-out-expo);
+  transition-delay: calc(300ms + (var(--ba-i, 0) * 60ms));
+}
+
+[data-reveal].is-visible .ac-before-after__metric--stagger {
+  opacity: 1;
+  transform: none;
+}
+
+/* After-side metrics get a slightly later start (panel appears second) */
+[data-reveal].is-visible .ac-before-after__side--after .ac-before-after__metric--stagger {
+  transition-delay: calc(500ms + (var(--ba-i, 0) * 60ms));
+}
+
+/* Mobile: stack vertically, before on top */
+@media (max-width: 640px) {
+  .ac-before-after {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  /* Divider arrow repositioned for vertical split */
+  .ac-before-after::before {
+    top: 50%;
+    left: 50%;
+    content: '↓';
+  }
+
+  .ac-before-after__side--before {
+    border-right: none;
+    border-bottom: var(--ac-border-width-thin) solid var(--ac-border-faint);
+    filter: saturate(0.6);
+  }
+}
+
+
+/* ─── 4. Stat Bar (.ac-stat-bar) ───────────────────────────────────────────── */
+/*
+  Section-level horizontal stat layout. Used between content sections
+  as a rhythmic beat — a waveform monitor's channel-select bar.
+
+  The existing .ac-stat component handles the individual stat.
+  This component handles the section-level layout: centering, spacing,
+  and the vertical dividers between items.
+
+  Design rationale: three numbers at full width, separated by hairline
+  rules. It reads like a hardware spec sheet — authoritative, precise.
+*/
+
+.ac-stat-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding-block: var(--ac-space-10);
+  width: 100%;
+  position: relative;
+}
+
+/* Hairline rules above and below the entire bar */
+.ac-stat-bar::before,
+.ac-stat-bar::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ac-border-faint) 10%,
+    var(--ac-border-subtle) 30%,
+    var(--ac-border-subtle) 70%,
+    var(--ac-border-faint) 90%,
+    transparent
+  );
+}
+
+.ac-stat-bar::before { top: 0; }
+.ac-stat-bar::after  { bottom: 0; }
+
+.ac-stat-bar__item {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-inline: var(--ac-space-8);
+  padding-block: var(--ac-space-4);
+  min-width: 0;
+}
+
+/* Vertical divider between stat items */
+.ac-stat-bar__divider {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--ac-border-subtle) 20%,
+    var(--ac-border-subtle) 80%,
+    transparent
+  );
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .ac-stat-bar {
+    flex-direction: column;
+    gap: var(--ac-space-6);
+    padding-block: var(--ac-space-8);
+  }
+
+  .ac-stat-bar__divider {
+    width: 48px;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--ac-border-subtle) 20%,
+      var(--ac-border-subtle) 80%,
+      transparent
+    );
+  }
+
+  .ac-stat-bar__item {
+    padding-inline: var(--ac-space-4);
+    padding-block: var(--ac-space-2);
+  }
+}
+
+
+/* ─── 5. Keyboard Shortcut Visual (.ac-keyboard) ───────────────────────────── */
+/*
+  Physical keycap aesthetic. Each key is a small raised surface —
+  the same way a real keycap sits above the keyboard deck:
+  slightly elevated, with an inset shadow that suggests depth,
+  and a bottom-edge shadow that anchors it to an implied surface.
+
+  This component communicates "power-user tool" and "you'll be faster."
+  It's used in the workflow/features section, not in a card.
+
+  Key states:
+    default  — elevated, structured
+    hover    — lifts slightly, border illuminates (spring transition)
+
+  The inset shadow on the top edge simulates the keycap's concave dish.
+  The outer bottom shadow simulates the physical gap between keycap and deck.
+*/
+
+.ac-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-3);
+}
+
+/* A horizontal row: key(s) + label */
+.ac-keyboard__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-4);
+  flex-wrap: wrap;
+}
+
+/* The key group inside a row (allows for combos: ⌘ + K) */
+.ac-keyboard__combo {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+  flex-shrink: 0;
+}
+
+/* Connector between keys in a combo (the "+" or "then") */
+.ac-keyboard__connector {
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  color: var(--ac-text-tertiary);
+  letter-spacing: var(--ac-tracking-normal);
+  user-select: none;
+}
+
+/* Individual physical keycap */
+.ac-keyboard__key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 34px;
+  padding-inline: var(--ac-space-2);
+
+  font-family: var(--ac-font-mono);
+  font-size: var(--ac-text-xs);
+  font-weight: var(--ac-weight-medium);
+  color: var(--ac-text-secondary);
+  letter-spacing: var(--ac-tracking-normal);
+  white-space: nowrap;
+
+  background: var(--ac-bg-elevated);
+  border: var(--ac-border-width-thin) solid var(--ac-border-default);
+  border-radius: var(--ac-radius-sm);
+
+  /*
+    Physical keycap shadow system:
+    1. inset top: the dish/concave highlight
+    2. inset bottom: the inner depth shadow
+    3. outer bottom: the physical gap/elevation shadow
+    4. ambient: gentle depth
+  */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.40),
+    0 2px 0 var(--ac-bg-void),
+    0 3px 6px rgba(0, 0, 0, 0.5);
+
+  transition:
+    transform var(--ac-duration-fast) var(--ac-ease-spring),
+    box-shadow var(--ac-duration-fast) var(--ac-ease-out-expo),
+    border-color var(--ac-duration-fast) var(--ac-ease-out-expo),
+    color var(--ac-duration-fast) var(--ac-ease-out-expo);
+
+  cursor: default;
+  user-select: none;
+  position: relative;
+  top: 0;
+}
+
+/* Hover: the key lifts — tactile feedback */
+@media (hover: hover) and (pointer: fine) {
+  .ac-keyboard__key:hover {
+    color: var(--ac-cyan);
+    border-color: var(--ac-cyan-subtle);
+    background: var(--ac-bg-elevated);
+    transform: translateY(-2px);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.35),
+      0 4px 0 var(--ac-bg-void),
+      0 6px 12px rgba(0, 0, 0, 0.5),
+      0 0 16px rgba(0, 212, 255, 0.08);
+    top: -2px;
+  }
+}
+
+/* Active/pressed: the key depresses */
+.ac-keyboard__key:active {
+  transform: translateY(1px);
+  top: 1px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.50),
+    0 1px 0 var(--ac-bg-void),
+    0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Keyboard row stagger — rows appear one by one on reveal */
+.ac-keyboard__row--stagger {
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--ac-duration-moderate) var(--ac-ease-out-expo),
+    transform var(--ac-duration-moderate) var(--ac-ease-out-expo);
+  transition-delay: calc(200ms + (var(--kb-i, 0) * 70ms));
+}
+
+/* Keyboard rows reveal when their parent card becomes visible via group or direct reveal */
+[data-reveal-group].is-visible .ac-keyboard__row--stagger,
+[data-reveal].is-visible .ac-keyboard__row--stagger {
+  opacity: 1;
+  transform: none;
+}
+
+/* The label describing what the shortcut does */
+.ac-keyboard__label {
+  font-family: var(--ac-font-sans);
+  font-size: var(--ac-text-sm);
+  font-weight: var(--ac-weight-regular);
+  color: var(--ac-text-secondary);
+  line-height: var(--ac-leading-normal);
+}
+
+/* Optional: highlight label when key is hovered (JS or :has() if supported) */
+.ac-keyboard__row:has(.ac-keyboard__key:hover) .ac-keyboard__label {
+  color: var(--ac-text-primary);
+}
+
+/* Size modifier: wider for longer labels like "Space" or "Return" */
+.ac-keyboard__key--wide {
+  min-width: 64px;
+}
+
+.ac-keyboard__key--xl {
+  min-width: 96px;
+}
+
+/* Modifier key styling: ⌘ ⌥ ⇧ — slightly different treatment */
+.ac-keyboard__key--modifier {
+  color: var(--ac-text-tertiary);
+  font-size: 10px;
+}
+
+/* Active/selected key — glowing, system is responding */
+.ac-keyboard__key--active {
+  color: var(--ac-cyan);
+  border-color: var(--ac-cyan-subtle);
+  background: var(--ac-cyan-dim);
+  box-shadow:
+    inset 0 1px 0 rgba(0, 212, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.30),
+    0 2px 0 var(--ac-bg-void),
+    0 3px 6px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(0, 212, 255, 0.15);
+}
+
+@media (max-width: 640px) {
+  .ac-keyboard__row {
+    gap: var(--ac-space-3);
+  }
+
+  .ac-keyboard__key {
+    min-width: 32px;
+    height: 30px;
+  }
+}
+
+
+/* ─── Reduced Motion: New Component Overrides ──────────────────────────────── */
+/*
+  Supplement the global reduced-motion block in animations.css.
+  These overrides target new components' specific transitions/animations.
+*/
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ac-wizard__step,
+  .ac-wizard__step-number,
+  .ac-wizard__step-title,
+  .ac-wizard__input,
+  .ac-wizard__step-expand,
+  .ac-wizard__step-content,
+  .ac-wizard__progress-fill {
+    transition: none;
+  }
+
+  .ac-wizard__step-expand {
+    grid-template-rows: 0fr;
+  }
+
+  .ac-wizard__step--active .ac-wizard__step-expand {
+    grid-template-rows: 1fr;
+  }
+
+  .ac-wizard__step--active .ac-wizard__step-content {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ac-wizard__step--active .ac-wizard__clip-stagger {
+    animation: none;
+  }
+
+  .ac-transcript__lost {
+    animation: none;
+    opacity: 0.8;
+  }
+
+  .ac-transcript__line {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ac-transcript__line--highlight::after {
+    animation: none;
+    opacity: 1;
+  }
+
+  .ac-keyboard__key {
+    transition: none;
+    transform: none;
+    top: 0;
+  }
+
+  .ac-keyboard__key:hover,
+  .ac-keyboard__key:active {
+    transform: none;
+    top: 0;
+  }
+
+  .ac-keyboard__row--stagger {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ac-tag--stagger {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ac-before-after__metric--stagger {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .ac-cta-block::before {
+    animation: none;
+  }
+
+  .ac-process-step--active .ac-process-step__number {
+    animation: none;
+  }
+
+  .ac-process-steps--horizontal .ac-process-step:not(:last-child) .ac-process-step__connector {
+    transform: scaleX(1);
+    transition: none;
+  }
+
+}
