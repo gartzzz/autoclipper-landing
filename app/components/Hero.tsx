@@ -24,10 +24,10 @@ export default function Hero() {
 
           <div className="ac-hero__actions ac-hero-animate--cta">
             <a
-              href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
+              href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
               className="ac-button ac-button--primary ac-button--lg"
             >
-              Descargalo gratis
+              Comprar por $49
               <span className="ac-button__arrow" aria-hidden="true">
                 &rarr;
               </span>
@@ -38,7 +38,7 @@ export default function Hero() {
           </div>
 
           <p className="ac-text ac-text--small ac-hero__note ac-hero-animate--cta">
-            Sin tarjeta. $0 para empezar. Setup en 2 minutos.
+            Un solo pago. Actualizaciones para siempre. Setup en 2 minutos.
           </p>
         </div>
 

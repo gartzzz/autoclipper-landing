@@ -23,10 +23,10 @@ export default function CTA() {
           </p>
           <div className="ac-cta-block__actions">
             <a
-              href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
+              href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
               className="ac-button ac-button--primary ac-button--lg"
             >
-              Descargalo gratis
+              Comprar por $49
               <span className="ac-button__arrow" aria-hidden="true">
                 &rarr;
               </span>
@@ -36,7 +36,7 @@ export default function CTA() {
             </a>
           </div>
           <p className="ac-cta-block__subtext">
-            Sin tarjeta &middot; $0 para empezar &middot; Setup en 2 minutos
+            Un solo pago &middot; Actualizaciones para siempre &middot; Setup en 2 minutos
           </p>
         </div>
       </div>

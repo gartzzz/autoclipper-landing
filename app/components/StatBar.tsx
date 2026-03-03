@@ -25,8 +25,8 @@ export default function StatBar() {
       <div className="ac-stat-bar__divider" data-reveal-child />
       <div className="ac-stat-bar__item" data-reveal-child>
         <div className="ac-stat">
-          <span className="ac-stat__value ac-stat__value--cyan">$0</span>
-          <span className="ac-stat__label">Para empezar</span>
+          <span className="ac-stat__value ac-stat__value--cyan">$49</span>
+          <span className="ac-stat__label">Un solo pago</span>
         </div>
       </div>
     </div>

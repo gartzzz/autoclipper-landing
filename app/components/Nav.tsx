@@ -35,10 +35,10 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
+            href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
             className="ac-button ac-button--sm ac-button--primary"
           >
-            Descargar
+            Comprar $49
           </a>
         </li>
       </ul>

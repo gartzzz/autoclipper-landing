@@ -92,7 +92,7 @@ export default function HeroWizard() {
               aria-label="API key"
             />
             <p className="ac-wizard__step-hint">
-              Crea una cuenta gratis en{" "}
+              Crea una cuenta en{" "}
               <a
                 href="https://openrouter.ai"
                 target="_blank"
@@ -118,9 +118,9 @@ export default function HeroWizard() {
               type="button"
               className="ac-button ac-button--sm ac-button--secondary"
               tabIndex={-1}
-              aria-label="Descargar plugin"
+              aria-label="Instalar plugin"
             >
-              Descargar .zxp
+              Instalar plugin
             </button>
           </>
         );
