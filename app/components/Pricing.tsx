@@ -1,88 +1,38 @@
 export default function Pricing() {
+  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800";
+
   return (
     <section className="ac-section ac-section--accent" id="precios">
       <div className="ac-section__inner">
         <div data-reveal>
-          <span className="ac-heading--eyebrow">Planes</span>
+          <span className="ac-heading--eyebrow">Precio</span>
         </div>
         <h2 className="ac-heading ac-heading--2" data-reveal>
-          Empieza gratis.
-          <br />
-          Escala cuando lo necesites.
+          Un pago. Tuyo para siempre.
         </h2>
         <p
           className="ac-text ac-text--lead"
           data-reveal
           style={{ marginTop: "var(--ac-space-3)" }}
         >
-          AutoClipper es gratis para siempre. Pro desbloquea clips ilimitados y
-          soporte prioritario.
+          Sin suscripciones, sin limites, sin cuentas. Compra, descarga,
+          instala.
         </p>
 
         <div
-          className="ac-feature-grid ac-feature-grid--2col"
-          data-reveal-group="slow"
-          style={{ marginTop: "var(--ac-space-10)" }}
+          style={{
+            maxWidth: "480px",
+            margin: "var(--ac-space-10) auto 0",
+          }}
+          data-reveal
         >
-          {/* ── Free ──────────────────────────────────────────────── */}
-          <div className="ac-card" data-reveal-child>
-            <div className="ac-card__body--lg">
-              <div className="ac-pricing-tier__header">
-                <span className="ac-badge ac-badge--neutral">Gratis</span>
-              </div>
-
-              <div
-                className="ac-pricing-tier__price"
-                style={{ marginTop: "var(--ac-space-5)" }}
-              >
-                <span
-                  className="ac-text--mono"
-                  style={{
-                    fontSize: "var(--ac-text-3xl)",
-                    fontWeight: "var(--ac-weight-bold)",
-                    color: "var(--ac-text-primary)",
-                    letterSpacing: "var(--ac-tracking-tight)",
-                  }}
-                >
-                  $0
-                </span>
-                <span className="ac-text ac-text--small">Para siempre</span>
-              </div>
-
-              <ul
-                className="ac-pricing-features"
-                style={{ marginTop: "var(--ac-space-6)" }}
-              >
-                <li data-included="true">3 clips por analisis</li>
-                <li data-included="true">7 factores de viralidad</li>
-                <li data-included="true">Marcado en timeline</li>
-                <li data-included="true">Titulos automaticos</li>
-                <li data-included="false">Clips ilimitados</li>
-                <li data-included="false">Soporte prioritario</li>
-              </ul>
-
-              <div style={{ marginTop: "var(--ac-space-8)" }}>
-                <a
-                  href="https://github.com/gartzzz/autoclipper/releases/latest/download/AutoClipper.zip"
-                  className="ac-button ac-button--secondary"
-                  style={{ width: "100%", justifyContent: "center" }}
-                >
-                  Descargar gratis
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* ── Pro ───────────────────────────────────────────────── */}
           <div
             className="ac-card ac-card--glow-cyan"
             data-scanlines
-            data-reveal-child
           >
             <div className="ac-card__body--lg">
               <div className="ac-pricing-tier__header">
-                <span className="ac-badge ac-badge--cyan">Pro</span>
-                <span className="ac-badge ac-badge--success">Mas popular</span>
+                <span className="ac-badge ac-badge--cyan">Early Bird</span>
               </div>
 
               <div
@@ -106,24 +56,15 @@ export default function Pricing() {
                       lineHeight: 1,
                     }}
                   >
-                    $X
+                    $49
                   </span>
-                  <span className="ac-text ac-text--small">/mes</span>
+                  <span className="ac-text ac-text--small">un solo pago</span>
                 </div>
                 <p
                   className="ac-text ac-text--small"
                   style={{ marginTop: "var(--ac-space-2)" }}
                 >
-                  O{" "}
-                  <strong
-                    style={{
-                      fontFamily: "var(--ac-font-mono)",
-                      color: "var(--ac-text-primary)",
-                    }}
-                  >
-                    $Y
-                  </strong>{" "}
-                  de por vida &mdash; un solo pago
+                  Precio de lanzamiento &mdash; sube con cada update
                 </p>
               </div>
 
@@ -131,21 +72,21 @@ export default function Pricing() {
                 className="ac-pricing-features"
                 style={{ marginTop: "var(--ac-space-6)" }}
               >
-                <li data-included="true">Todo lo de Gratis</li>
                 <li data-included="true">Clips ilimitados</li>
                 <li data-included="true">7 factores de viralidad</li>
-                <li data-included="true">Marcado en timeline</li>
-                <li data-included="true">Titulos automaticos</li>
-                <li data-included="true">Soporte prioritario</li>
+                <li data-included="true">OpenRouter + Ollama (offline)</li>
+                <li data-included="true">Marcado en timeline + subtitulos</li>
+                <li data-included="true">Updates gratis</li>
+                <li data-included="true">Soporte directo</li>
               </ul>
 
               <div style={{ marginTop: "var(--ac-space-8)" }}>
                 <a
-                  href="#"
+                  href={STRIPE_PAYMENT_LINK}
                   className="ac-button ac-button--primary"
                   style={{ width: "100%", justifyContent: "center" }}
                 >
-                  Empezar con Pro
+                  Comprar AutoClipper
                   <span className="ac-button__arrow" aria-hidden="true">
                     &rarr;
                   </span>
@@ -160,8 +101,8 @@ export default function Pricing() {
           data-reveal
           style={{ textAlign: "center", marginTop: "var(--ac-space-6)" }}
         >
-          Sin tarjeta para el plan gratis &middot; Cancela cuando quieras
-          &middot; Pago seguro con Stripe
+          Pago seguro con Stripe &middot; Descarga inmediata &middot; Sin
+          suscripcion
         </p>
       </div>
     </section>
