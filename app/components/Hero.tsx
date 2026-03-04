@@ -1,8 +1,10 @@
 import HeroWizard from "./HeroWizard";
+import HeroShader from "./HeroShader";
 
 export default function Hero() {
   return (
     <section className="ac-section ac-section--hero">
+      <HeroShader />
       <div className="ac-hero">
         {/* ── Left column: Copy + CTAs ────────────────────────────────────── */}
         <div className="ac-hero__content">

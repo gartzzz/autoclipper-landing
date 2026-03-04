@@ -1368,6 +1368,21 @@
   transform: translate(-50%, -50%);
 }
 
+/* WebGL shader canvas — fills entire hero section as background */
+.ac-hero-shader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  /* Fade-in on load matching hero entrance timing */
+  animation: ac-fade-in 1.2s var(--ac-ease-out-expo) 0ms both;
+  /* Blend softly with the page background */
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 20%, transparent 75%);
+}
+
 @media (max-width: 1024px) {
   .ac-hero__visual {
     max-width: 520px;
