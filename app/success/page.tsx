@@ -21,22 +21,14 @@ const macSteps = [
   },
   {
     number: "02",
-    title: "Copia la carpeta de la extension",
-    description: "Abre Finder y navega a esta ruta (puedes pegarla con Cmd+Shift+G):",
-    code: "~/Library/Application Support/Adobe/CEP/extensions/",
+    title: "Ejecuta el instalador",
+    description:
+      "Dentro de la carpeta, haz doble click en AutoClipper-Installer.pkg. Sigue el asistente (siguiente, siguiente, instalar). Te pedira la contrasena de tu Mac para completar la instalacion.",
     detail:
-      "Si la carpeta 'extensions' no existe, creala. Luego arrastra la carpeta 'extension' (que esta dentro de AutoClipper) ahi dentro y renombrala a:",
-    codeAlt: "com.gartzzz.autoclipper",
+      "El instalador copia la extension, activa los permisos de Premiere y configura Ollama automaticamente. Si macOS muestra una alerta de seguridad, haz click derecho > Abrir.",
   },
   {
     number: "03",
-    title: "Activa las extensiones sin firmar",
-    description: "Abre Terminal (esta en Aplicaciones > Utilidades) y pega estos comandos:",
-    code: "defaults write com.adobe.CSXS.9 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.10 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.11 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.12 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.13 PlayerDebugMode 1\nlaunchctl setenv OLLAMA_ORIGINS \"*\"",
-    detail: "Los primeros 5 comandos permiten que Premiere cargue extensiones de terceros. El ultimo permite que Ollama (IA local) se conecte con el panel. Solo hay que hacerlo una vez.",
-  },
-  {
-    number: "04",
     title: "Abre Premiere Pro",
     description:
       "Cierra Premiere completamente si estaba abierto (Cmd+Q). Abrelo de nuevo y ve a:",
@@ -510,9 +502,9 @@ export default function SuccessPage() {
               data-reveal
               style={{ textAlign: "center" }}
             >
-              4 pasos. 2 minutos.
+              {os === "mac" ? "3 pasos" : "4 pasos"}. 2 minutos.
               <br />
-              Sin instaladores, sin terminal.
+              {os === "mac" ? "Un instalador. Cero terminal." : "Sin instaladores, sin terminal."}
             </h2>
 
             {/* OS tabs */}
