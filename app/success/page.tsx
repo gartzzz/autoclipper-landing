@@ -3,74 +3,56 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
-/* ─── Constants ────────────────────────────────────────────────────────────── */
+/* ─── Download URLs ────────────────────────────────────────────────────────── */
 
-const DOWNLOAD_URL = "/AutoClipper.zip";
+const DOWNLOADS = {
+  mac: { url: "/AutoClipper-Installer.pkg", label: "Descargar para macOS", ext: ".pkg" },
+  win: { url: "/AutoClipper-Installer-Win.exe", label: "Descargar para Windows", ext: ".exe" },
+} as const;
 
-const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
+/* ─── Spring / easing config ───────────────────────────────────────────────── */
 
 const springConfig = { type: "spring" as const, stiffness: 380, damping: 22 };
 
-/* ─── Mac steps ────────────────────────────────────────────────────────────── */
+/* ─── Steps per OS ─────────────────────────────────────────────────────────── */
+
 const macSteps = [
   {
     number: "01",
-    title: "Descomprime el archivo",
-    description:
-      "Haz doble click en AutoClipper.zip. Se creara una carpeta AutoClipper con todo lo necesario.",
-  },
-  {
-    number: "02",
     title: "Ejecuta el instalador",
     description:
-      "Dentro de la carpeta, haz doble click en AutoClipper-Installer.pkg. Sigue el asistente (siguiente, siguiente, instalar). Te pedira la contrasena de tu Mac para completar la instalacion.",
+      "Abre el archivo .pkg que acabas de descargar. Sigue el asistente: siguiente, siguiente, contrasena, instalar. Listo.",
     detail:
       "El instalador copia la extension, activa los permisos de Premiere y configura Ollama automaticamente. Si macOS muestra una alerta de seguridad, haz click derecho > Abrir.",
   },
   {
-    number: "03",
+    number: "02",
     title: "Abre Premiere Pro",
     description:
       "Cierra Premiere completamente si estaba abierto (Cmd+Q). Abrelo de nuevo y ve a:",
     code: "Window > Extensions > AutoClipper",
-    detail: "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
+    detail:
+      "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
   },
 ];
 
-/* ─── Windows steps ────────────────────────────────────────────────────────── */
 const winSteps = [
   {
     number: "01",
-    title: "Descomprime el archivo",
+    title: "Ejecuta el instalador",
     description:
-      "Click derecho en AutoClipper.zip > Extraer todo. Se creara una carpeta AutoClipper.",
+      "Abre el archivo .exe que acabas de descargar. Sigue el asistente: siguiente, siguiente, instalar. No necesita permisos de administrador.",
+    detail:
+      "El instalador copia la extension, configura el registro de Windows para Premiere y establece la conexion con Ollama automaticamente.",
   },
   {
     number: "02",
-    title: "Copia la carpeta de la extension",
-    description:
-      "Abre el Explorador de archivos y navega a esta ruta (pegala en la barra de direcciones):",
-    code: "%APPDATA%\\Adobe\\CEP\\extensions\\",
-    detail:
-      "Si la carpeta 'extensions' no existe, creala. Luego copia la carpeta 'extension' (que esta dentro de AutoClipper) ahi dentro y renombrala a:",
-    codeAlt: "com.gartzzz.autoclipper",
-  },
-  {
-    number: "03",
-    title: "Activa las extensiones sin firmar",
-    description:
-      "Abre el Editor del Registro: pulsa Win+R, escribe regedit y pulsa Enter. Navega a:",
-    code: "HKEY_CURRENT_USER\\SOFTWARE\\Adobe\\CSXS.11",
-    detail:
-      'Click derecho en el panel derecho > Nuevo > Valor de cadena. Nombre: PlayerDebugMode, Valor: 1. Repite para CSXS.12 y CSXS.13 si existen.',
-  },
-  {
-    number: "04",
     title: "Abre Premiere Pro",
     description:
       "Cierra Premiere completamente si estaba abierto. Abrelo de nuevo y ve a:",
     code: "Window > Extensions > AutoClipper",
-    detail: "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
+    detail:
+      "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
   },
 ];
 
@@ -163,7 +145,6 @@ interface StepData {
   description: string;
   code?: string;
   detail?: string;
-  codeAlt?: string;
 }
 
 function StepCard({
@@ -194,7 +175,6 @@ function StepCard({
         transition: "var(--ac-transition-shadow)",
       }}
     >
-      {/* Number badge */}
       <div
         style={{
           display: "flex",
@@ -264,8 +244,6 @@ function StepCard({
           {step.detail}
         </p>
       )}
-
-      {step.codeAlt && <CodeBlock code={step.codeAlt} />}
     </motion.div>
   );
 }
@@ -290,23 +268,23 @@ function OsTab({
       whileTap={{ scale: 0.98 }}
       style={{
         flex: 1,
-        padding: "var(--ac-space-3) var(--ac-space-4)",
+        padding: "var(--ac-space-2) var(--ac-space-4)",
         borderRadius: "var(--ac-radius-md)",
         border: `1px solid ${active ? "var(--ac-cyan-muted)" : "var(--ac-border-subtle)"}`,
         background: active ? "var(--ac-cyan-dim)" : "var(--ac-bg-surface)",
         color: active ? "var(--ac-cyan-bright)" : "var(--ac-text-secondary)",
         cursor: "pointer",
         fontFamily: "var(--ac-font-sans)",
-        fontSize: "var(--ac-text-sm)",
+        fontSize: "var(--ac-text-xs)",
         fontWeight: "var(--ac-weight-semibold)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: "var(--ac-space-2)",
+        gap: "var(--ac-space-1)",
         transition: "var(--ac-transition-all)",
       }}
     >
-      <span style={{ fontSize: "18px" }}>{icon}</span>
+      <span style={{ fontSize: "14px" }}>{icon}</span>
       {label}
     </motion.button>
   );
@@ -324,6 +302,9 @@ export default function SuccessPage() {
   const stepsRef = useRef<HTMLDivElement>(null);
   const stepsInView = useInView(stepsRef, { once: true, margin: "-60px" });
 
+  const download = DOWNLOADS[os];
+  const steps = os === "mac" ? macSteps : winSteps;
+
   /* Auto-detect OS */
   useEffect(() => {
     if (typeof navigator !== "undefined") {
@@ -332,26 +313,25 @@ export default function SuccessPage() {
     }
   }, []);
 
-  /* Countdown + auto-download */
+  /* Countdown + auto-download of the correct installer */
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          window.location.href = DOWNLOAD_URL;
+          window.location.href = DOWNLOADS[os].url;
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
     return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const steps = os === "mac" ? macSteps : winSteps;
 
   return (
     <>
-      {/* ─── Nav (simplified) ──────────────────────────────────────────── */}
+      {/* ─── Nav ───────────────────────────────────────────────────────── */}
       <nav
         className="ac-nav ac-nav--scrolled"
         aria-label="Navegacion"
@@ -369,7 +349,7 @@ export default function SuccessPage() {
       </nav>
 
       <main id="main">
-        {/* ─── Hero: Payment confirmed ──────────────────────────────── */}
+        {/* ─── Hero ────────────────────────────────────────────────────── */}
         <section
           className="ac-section"
           style={{
@@ -378,7 +358,7 @@ export default function SuccessPage() {
           }}
         >
           <div className="ac-section__inner" ref={heroRef}>
-            {/* Success badge */}
+            {/* Success icon */}
             <motion.div
               custom={0}
               variants={fadeUp}
@@ -444,16 +424,16 @@ export default function SuccessPage() {
                 marginInline: "auto",
               }}
             >
-              La descarga empieza en{" "}
+              Tu instalador se descarga en{" "}
               <strong
                 className="ac-text--mono"
                 style={{ color: "var(--ac-cyan)" }}
               >
                 {countdown > 0 ? `${countdown}s` : "..."}
               </strong>
-              {" "}. Si no arranca automaticamente:
             </motion.p>
 
+            {/* Download button */}
             <motion.div
               custom={0.3}
               variants={fadeUp}
@@ -461,12 +441,14 @@ export default function SuccessPage() {
               animate={heroInView ? "visible" : "hidden"}
               style={{
                 display: "flex",
-                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "var(--ac-space-3)",
                 marginTop: "var(--ac-space-5)",
               }}
             >
               <motion.a
-                href={DOWNLOAD_URL}
+                href={download.url}
                 className="ac-button ac-button--primary ac-button--lg"
                 whileHover={{
                   scale: 1.03,
@@ -479,16 +461,38 @@ export default function SuccessPage() {
                   gap: "0.5em",
                 }}
               >
-                Descargar AutoClipper.zip
+                {download.label}
                 <span style={{ fontSize: "1.1em" }} aria-hidden="true">
                   &darr;
                 </span>
               </motion.a>
+
+              {/* OS switcher (small, below button) */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "var(--ac-space-2)",
+                  maxWidth: 260,
+                }}
+              >
+                <OsTab
+                  label="macOS"
+                  icon="&#63743;"
+                  active={os === "mac"}
+                  onClick={() => setOs("mac")}
+                />
+                <OsTab
+                  label="Windows"
+                  icon="&#8862;"
+                  active={os === "win"}
+                  onClick={() => setOs("win")}
+                />
+              </div>
             </motion.div>
           </div>
         </section>
 
-        {/* ─── Installation guide ───────────────────────────────────── */}
+        {/* ─── Installation guide ───────────────────────────────────────── */}
         <section
           className="ac-section ac-section--alt"
           style={{ paddingTop: "var(--ac-space-16)" }}
@@ -502,35 +506,12 @@ export default function SuccessPage() {
               data-reveal
               style={{ textAlign: "center" }}
             >
-              {os === "mac" ? "3 pasos" : "4 pasos"}. 2 minutos.
+              2 pasos. 1 minuto.
               <br />
-              {os === "mac" ? "Un instalador. Cero terminal." : "Sin instaladores, sin terminal."}
+              Instala, abre Premiere, listo.
             </h2>
 
-            {/* OS tabs */}
-            <div
-              style={{
-                display: "flex",
-                gap: "var(--ac-space-2)",
-                maxWidth: 320,
-                margin: "var(--ac-space-8) auto var(--ac-space-8)",
-              }}
-            >
-              <OsTab
-                label="macOS"
-                icon="&#63743;"
-                active={os === "mac"}
-                onClick={() => setOs("mac")}
-              />
-              <OsTab
-                label="Windows"
-                icon="&#8862;"
-                active={os === "win"}
-                onClick={() => setOs("win")}
-              />
-            </div>
-
-            {/* Steps grid */}
+            {/* Steps */}
             <div
               ref={stepsRef}
               style={{
@@ -538,7 +519,7 @@ export default function SuccessPage() {
                 gridTemplateColumns: "1fr 1fr",
                 gap: "var(--ac-space-4)",
                 maxWidth: "860px",
-                margin: "0 auto",
+                margin: "var(--ac-space-8) auto 0",
               }}
             >
               {steps.map((step, i) => (
@@ -551,7 +532,6 @@ export default function SuccessPage() {
               ))}
             </div>
 
-            {/* Responsive override */}
             <style>{`
               @media (max-width: 768px) {
                 div[style*="grid-template-columns: 1fr 1fr"] {
@@ -560,7 +540,7 @@ export default function SuccessPage() {
               }
             `}</style>
 
-            {/* Troubleshooting tip */}
+            {/* Troubleshooting */}
             <motion.div
               custom={0.5}
               variants={fadeUp}
@@ -586,13 +566,14 @@ export default function SuccessPage() {
                 <strong style={{ color: "var(--ac-warning)" }}>
                   No aparece en Extensions?
                 </strong>{" "}
-                Asegurate de haber reiniciado Premiere completamente (no solo
-                cerrar el proyecto). Si usas Premiere 2024+, verifica que los
-                comandos del paso 3 se ejecutaron sin errores.
+                Asegurate de haber reiniciado Premiere completamente (Cmd+Q en
+                Mac, no solo cerrar el proyecto).{" "}
+                {os === "mac"
+                  ? "Si macOS bloquea el instalador, haz click derecho > Abrir."
+                  : "Si Windows muestra SmartScreen, haz click en 'Mas informacion' > 'Ejecutar de todas formas'."}
               </p>
             </motion.div>
 
-            {/* Support */}
             <p
               className="ac-text ac-text--small"
               style={{
