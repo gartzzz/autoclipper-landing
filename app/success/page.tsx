@@ -32,8 +32,8 @@ const macSteps = [
     number: "03",
     title: "Activa las extensiones sin firmar",
     description: "Abre Terminal (esta en Aplicaciones > Utilidades) y pega estos comandos:",
-    code: "defaults write com.adobe.CSXS.9 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.10 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.11 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.12 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.13 PlayerDebugMode 1",
-    detail: "Esto permite que Premiere cargue extensiones de terceros. Solo hay que hacerlo una vez.",
+    code: "defaults write com.adobe.CSXS.9 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.10 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.11 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.12 PlayerDebugMode 1\ndefaults write com.adobe.CSXS.13 PlayerDebugMode 1\nlaunchctl setenv OLLAMA_ORIGINS \"*\"",
+    detail: "Los primeros 5 comandos permiten que Premiere cargue extensiones de terceros. El ultimo permite que Ollama (IA local) se conecte con el panel. Solo hay que hacerlo una vez.",
   },
   {
     number: "04",
