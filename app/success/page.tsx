@@ -5,9 +5,11 @@ import { useRef, useState, useEffect } from "react";
 
 /* ─── Download URLs ────────────────────────────────────────────────────────── */
 
+const RELEASE_BASE = "https://github.com/gartzzz/autoclipper/releases/download/v1.0.0";
+
 const DOWNLOADS = {
-  mac: { url: "/AutoClipper-Installer.pkg", label: "Descargar para macOS", ext: ".pkg" },
-  win: { url: "/AutoClipper-Installer-Win.exe", label: "Descargar para Windows", ext: ".exe" },
+  mac: { url: `${RELEASE_BASE}/AutoClipper-Installer.pkg`, label: "Descargar para macOS", ext: ".pkg" },
+  win: { url: `${RELEASE_BASE}/AutoClipper-Installer-Win.exe`, label: "Descargar para Windows", ext: ".exe" },
 } as const;
 
 /* ─── Spring / easing config ───────────────────────────────────────────────── */
