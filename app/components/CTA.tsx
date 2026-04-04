@@ -255,8 +255,8 @@ export default function CTA() {
             >
               No es cuestion de talento. Tu contenido ya es bueno. El problema
               es que los mejores 30 segundos se te escapan enterrados en 40
-              minutos de timeline. AutoClipper los encuentra, los marca, les
-              pone titulo y los deja listos para subir. La pregunta no es si
+              minutos de timeline. AutoClipper los encuentra, los separa en
+              secuencias, les pone titulo y los deja listos para exportar. La pregunta no es si
               funciona. Es cuanto tiempo mas vas a seguir haciendolo a mano.
             </motion.p>
 

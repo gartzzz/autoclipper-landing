@@ -10,7 +10,7 @@ export default function Solution() {
         <h2 className="ac-heading ac-heading--2" data-reveal>
           AutoClipper edita por ti.
           <br />
-          <span className="ac-highlight">Detecta. Marca. Titula. Exporta.</span>
+          <span className="ac-highlight">Detecta. Divide. Titula. Exporta.</span>
         </h2>
         <p className="ac-text ac-text--lead" data-reveal>
           Un plugin de Premiere Pro que convierte tu transcripcion en clips

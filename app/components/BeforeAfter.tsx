@@ -9,7 +9,7 @@ const afterMetrics = [
   { value: "5 min", label: "analisis completo con IA" },
   { value: "10-15 clips", label: "puntuados por potencial viral" },
   { value: "7 factores", label: "scoring desglosado por clip" },
-  { value: "Automatico", label: "marcas, titulos, subs y export" },
+  { value: "Automatico", label: "secuencias, titulos, subs y export" },
 ];
 
 export default function BeforeAfter() {

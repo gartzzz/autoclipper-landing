@@ -19,9 +19,10 @@ export default function Hero() {
 
           <p className="ac-hero__sub ac-hero-animate--subtitle">
             Pega tu transcripcion. La IA detecta los momentos con mayor carga
-            viral, los puntua en 7 factores, marca los clips en tu timeline,
-            les pone titulos y subtitulos, y los deja listos para TikTok, Reels
-            y Shorts. Todo dentro de Premiere Pro.
+            viral, los puntua en 7 factores, los divide en secuencias
+            independientes, les pone titulos y subtitulos, y los deja listos
+            para exportar en lote a TikTok, Reels y Shorts. Todo dentro de
+            Premiere Pro.
           </p>
 
           <div className="ac-hero__actions ac-hero-animate--cta">

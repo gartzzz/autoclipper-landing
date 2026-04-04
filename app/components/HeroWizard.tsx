@@ -198,7 +198,7 @@ export default function HeroWizard() {
               </div>
             </div>
             <p className="ac-wizard__step-hint">
-              Cada momento puntuado del 0 al 100. Los mejores clips, marcados y
+              Cada momento puntuado del 0 al 100. Los mejores clips, separados en secuencias y
               listos.
             </p>
           </>

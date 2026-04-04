@@ -30,7 +30,7 @@ const steps = [
     number: "03",
     title: "AutoClipper hace el resto",
     description:
-      "Los clips aprobados se marcan en tu timeline automaticamente. AutoClipper les agrega titulos y subtitulos, y los deja listos para exportar a TikTok, Reels y Shorts. Tu solo le das al boton.",
+      "Los clips aprobados se dividen en secuencias independientes automaticamente. AutoClipper les agrega titulos y subtitulos, y los deja listos para exportar en lote a TikTok, Reels y Shorts. Tu solo le das al boton.",
   },
 ];
 

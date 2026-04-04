@@ -112,7 +112,7 @@ const features = [
   "Clips ilimitados",
   "7 factores de viralidad",
   "OpenRouter + Ollama (offline)",
-  "Marcado en timeline + subtitulos",
+  "Secuencias + subtitulos + export en lote",
   "Updates gratis",
   "Soporte directo",
 ];
