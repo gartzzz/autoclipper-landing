@@ -14,8 +14,8 @@ interface WizardStep {
 
 const STEPS: WizardStep[] = [
   {
-    title: "Consigue tu API key",
-    summary: "sk-or-v1\u2022\u2022\u2022\u2022\u2022\u2022\u2022dk2m",
+    title: "Instala Ollama",
+    summary: "ollama + gemma4 listo",
   },
   {
     title: "Instala el plugin",
@@ -79,29 +79,28 @@ export default function HeroWizard() {
   /* ── Rendered step content per index ─────────────────────────────────────── */
   const renderStepContent = (index: number) => {
     switch (index) {
-      /* Step 1 — API Key */
+      /* Step 1 — Install Ollama */
       case 0:
         return (
           <>
-            <input
-              type="text"
+            <div
               className="ac-wizard__input"
-              placeholder="sk-or-..."
-              readOnly
-              tabIndex={-1}
-              aria-label="API key"
-            />
+              style={{
+                fontFamily: "var(--ac-font-mono)",
+                fontSize: "var(--ac-text-xs)",
+                color: "var(--ac-cyan-bright)",
+                cursor: "default",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+              aria-label="Comando de instalacion de Ollama"
+            >
+              curl -fsSL https://ollama.com/install.sh | sh
+            </div>
             <p className="ac-wizard__step-hint">
-              Crea una cuenta en{" "}
-              <a
-                href="https://openrouter.ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "var(--ac-cyan)", textDecoration: "underline" }}
-              >
-                OpenRouter
-              </a>
-              . Copia tu clave. 30 segundos.
+              Pega esto en tu terminal. Ollama ejecuta Gemma 4 en local —
+              gratis, privado, sin API keys.
             </p>
           </>
         );
