@@ -9,14 +9,6 @@ export default function Footer() {
           </p>
         </div>
         <div className="ac-footer__links">
-          <a
-            href="https://github.com/gartzzz/autoclipper"
-            className="ac-footer__link"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub
-          </a>
           <a href="#como-funciona" className="ac-footer__link">
             Como funciona
           </a>

@@ -3,15 +3,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
-/* ─── Download URLs ────────────────────────────────────────────────────────── */
-
-const RELEASE_BASE = "https://github.com/gartzzz/autoclipper/releases/download/v1.0.0";
-
-const DOWNLOADS = {
-  mac: { url: `${RELEASE_BASE}/AutoClipper-Installer.pkg`, label: "Descargar para macOS", ext: ".pkg" },
-  win: { url: `${RELEASE_BASE}/AutoClipper-Installer-Win.exe`, label: "Descargar para Windows", ext: ".exe" },
-} as const;
-
 /* ─── Spring / easing config ───────────────────────────────────────────────── */
 
 const springConfig = { type: "spring" as const, stiffness: 380, damping: 22 };
@@ -295,7 +286,6 @@ function OsTab({
 /* ─── Main page ────────────────────────────────────────────────────────────── */
 
 export default function SuccessPage() {
-  const [countdown, setCountdown] = useState(5);
   const [os, setOs] = useState<"mac" | "win">("mac");
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -304,7 +294,6 @@ export default function SuccessPage() {
   const stepsRef = useRef<HTMLDivElement>(null);
   const stepsInView = useInView(stepsRef, { once: true, margin: "-60px" });
 
-  const download = DOWNLOADS[os];
   const steps = os === "mac" ? macSteps : winSteps;
 
   /* Auto-detect OS */
@@ -313,22 +302,6 @@ export default function SuccessPage() {
       const ua = navigator.userAgent.toLowerCase();
       if (ua.includes("win")) setOs("win");
     }
-  }, []);
-
-  /* Countdown + auto-download of the correct installer */
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          window.location.href = DOWNLOADS[os].url;
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -426,70 +399,95 @@ export default function SuccessPage() {
                 marginInline: "auto",
               }}
             >
-              Tu instalador se descarga en{" "}
-              <strong
-                className="ac-text--mono"
-                style={{ color: "var(--ac-cyan)" }}
-              >
-                {countdown > 0 ? `${countdown}s` : "..."}
-              </strong>
+              Hemos enviado el instalador a tu correo.
+              <br />
+              <span style={{ color: "var(--ac-text-secondary)" }}>
+                Revisa tu bandeja de entrada (y spam, por si acaso).
+              </span>
             </motion.p>
 
-            {/* Download button */}
+            {/* Video placeholder */}
             <motion.div
               custom={0.3}
               variants={fadeUp}
               initial="hidden"
               animate={heroInView ? "visible" : "hidden"}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "var(--ac-space-3)",
-                marginTop: "var(--ac-space-5)",
+                maxWidth: "680px",
+                marginInline: "auto",
+                marginTop: "var(--ac-space-8)",
               }}
             >
-              <motion.a
-                href={download.url}
-                className="ac-button ac-button--primary ac-button--lg"
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 28px 8px rgba(157,140,255,0.5)",
-                }}
-                whileTap={{ scale: 0.97 }}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5em",
-                }}
-              >
-                {download.label}
-                <span style={{ fontSize: "1.1em" }} aria-hidden="true">
-                  &darr;
-                </span>
-              </motion.a>
-
-              {/* OS switcher (small, below button) */}
               <div
                 style={{
+                  position: "relative",
+                  aspectRatio: "16 / 9",
+                  background: "var(--ac-bg-surface)",
+                  border: "1px solid var(--ac-border-subtle)",
+                  borderRadius: "var(--ac-radius-lg)",
                   display: "flex",
-                  gap: "var(--ac-space-2)",
-                  maxWidth: 260,
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "var(--ac-space-3)",
                 }}
               >
-                <OsTab
-                  label="macOS"
-                  icon="&#63743;"
-                  active={os === "mac"}
-                  onClick={() => setOs("mac")}
-                />
-                <OsTab
-                  label="Windows"
-                  icon="&#8862;"
-                  active={os === "win"}
-                  onClick={() => setOs("win")}
-                />
+                <div
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: "50%",
+                    background: "var(--ac-cyan-dim)",
+                    border: "1px solid var(--ac-cyan-muted)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 28,
+                    color: "var(--ac-cyan)",
+                  }}
+                >
+                  &#9654;
+                </div>
+                <p
+                  className="ac-text"
+                  style={{
+                    color: "var(--ac-text-secondary)",
+                    fontSize: "var(--ac-text-sm)",
+                    margin: 0,
+                  }}
+                >
+                  Video de instalacion — proximamente
+                </p>
               </div>
+            </motion.div>
+
+            {/* OS switcher for installation steps */}
+            <motion.div
+              custom={0.4}
+              variants={fadeUp}
+              initial="hidden"
+              animate={heroInView ? "visible" : "hidden"}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "var(--ac-space-2)",
+                marginTop: "var(--ac-space-6)",
+                maxWidth: 260,
+                marginInline: "auto",
+              }}
+            >
+              <OsTab
+                label="macOS"
+                icon="&#63743;"
+                active={os === "mac"}
+                onClick={() => setOs("mac")}
+              />
+              <OsTab
+                label="Windows"
+                icon="&#8862;"
+                active={os === "win"}
+                onClick={() => setOs("win")}
+              />
             </motion.div>
           </div>
         </section>
