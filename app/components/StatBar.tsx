@@ -81,8 +81,8 @@ export default function StatBar() {
 
   // Stat 1: time 45 → 5  (counts down)
   const timeFrom = useCountUp(45, 5, isInView);
-  // Stat 2: clips 2 → 12 (counts up)
-  const clipsTo = useCountUp(2, 12, isInView);
+  // Stat 2: clips 0 → 12 (counts up)
+  const clipsTo = useCountUp(0, 12, isInView);
 
   return (
     <motion.div
