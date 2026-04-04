@@ -156,6 +156,8 @@ export default function Pricing() {
             maxWidth: "480px",
             margin: "var(--ac-space-10) auto 0",
             position: "relative",
+            overflow: "hidden",
+            borderRadius: "calc(var(--ac-radius-lg) + 1px)",
           }}
           initial={{ opacity: 0, scale: 0.95, y: 24 }}
           animate={
