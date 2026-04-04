@@ -52,20 +52,28 @@ function AnimatedPrice({ target }: { target: number }) {
 */
 function RotatingBorder() {
   return (
-    <motion.div
+    <div
       aria-hidden="true"
-      animate={{ rotate: 360 }}
-      transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       style={{
         position: "absolute",
         inset: "-1px",
         borderRadius: "calc(var(--ac-radius-lg) + 1px)",
-        background:
-          "conic-gradient(from 0deg, transparent 0deg, rgba(157,140,255,0.55) 60deg, rgba(181,166,255,0.8) 90deg, rgba(157,140,255,0.55) 120deg, transparent 180deg)",
+        overflow: "hidden",
         zIndex: 0,
         pointerEvents: "none",
       }}
-    />
+    >
+      <motion.div
+        animate={{ rotate: 360 }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "conic-gradient(from 0deg, transparent 0deg, rgba(157,140,255,0.55) 60deg, rgba(181,166,255,0.8) 90deg, rgba(157,140,255,0.55) 120deg, transparent 180deg)",
+        }}
+      />
+    </div>
   );
 }
 
@@ -110,8 +118,8 @@ const breathe: import("framer-motion").TargetAndTransition = {
 /* ─── Features data ─────────────────────────────────────────────────────── */
 const features = [
   "Clips ilimitados",
+  "IA local con Gemma 4 — sin API keys, sin costes",
   "7 factores de viralidad",
-  "OpenRouter + Ollama (offline)",
   "Secuencias + subtitulos + export en lote",
   "Updates gratis",
   "Soporte directo",
@@ -156,8 +164,6 @@ export default function Pricing() {
             maxWidth: "480px",
             margin: "var(--ac-space-10) auto 0",
             position: "relative",
-            overflow: "hidden",
-            borderRadius: "calc(var(--ac-radius-lg) + 1px)",
           }}
           initial={{ opacity: 0, scale: 0.95, y: 24 }}
           animate={
