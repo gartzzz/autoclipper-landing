@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
+import TerminalTypewriter, { type TypeStep } from "./TerminalTypewriter";
 
 /* ─── Spring / easing config ───────────────────────────────────────────────── */
 
@@ -45,24 +46,98 @@ const nextSteps = [
   },
 ];
 
-/* ─── Quick-start terminal commands (OS-specific) ──────────────────────────── */
+/* ─── Quick-start terminal scenes (typed char-by-char, fake output in between) ── */
 
-const macQuickstart = `# 1. Instalar Ollama
-brew install ollama
+const macTerminalSteps: TypeStep[] = [
+  { kind: "type", text: "$ brew install ollama" },
+  { kind: "nl" },
+  { kind: "pause", ms: 400 },
+  { kind: "out", text: "==> Downloading https://ghcr.io/v2/homebrew/core/ollama/blobs/..." },
+  { kind: "nl" },
+  { kind: "pause", ms: 180 },
+  { kind: "out", text: "==> Pouring ollama--0.4.0.arm64_sequoia.bottle.tar.gz" },
+  { kind: "nl" },
+  { kind: "pause", ms: 240 },
+  { kind: "out", text: "🍺  /opt/homebrew/Cellar/ollama/0.4.0: 12 files, 24.8MB" },
+  { kind: "nl" },
+  { kind: "pause", ms: 700 },
+  { kind: "nl" },
+  { kind: "type", text: "$ ollama pull gemma4:12b" },
+  { kind: "nl" },
+  { kind: "pause", ms: 400 },
+  { kind: "out", text: "pulling manifest" },
+  { kind: "nl" },
+  { kind: "pause", ms: 260 },
+  { kind: "out", text: "pulling 8eeb52dfb3bb... 100% ▕████████████████▏ 7.2 GB" },
+  { kind: "nl" },
+  { kind: "pause", ms: 220 },
+  { kind: "out", text: "pulling 621cdd7ced3b... 100% ▕████████████████▏ 7.0 KB" },
+  { kind: "nl" },
+  { kind: "pause", ms: 220 },
+  { kind: "out", text: "verifying sha256 digest" },
+  { kind: "nl" },
+  { kind: "pause", ms: 160 },
+  { kind: "out", text: "writing manifest" },
+  { kind: "nl" },
+  { kind: "pause", ms: 160 },
+  { kind: "out", text: "success" },
+  { kind: "nl" },
+  { kind: "pause", ms: 700 },
+  { kind: "nl" },
+  { kind: "type", text: "$ ollama run gemma4:12b" },
+  { kind: "nl" },
+  { kind: "pause", ms: 500 },
+  { kind: "out", text: ">>> " },
+  { kind: "pause", ms: 1200 },
+  { kind: "out", text: "listo para analizar transcripciones." },
+  { kind: "pause", ms: 4500 },
+];
 
-# 2. Descargar Gemma 4 (~7GB, una sola vez)
+const winTerminalSteps: TypeStep[] = [
+  { kind: "type", text: "> winget install --id Ollama.Ollama" },
+  { kind: "nl" },
+  { kind: "pause", ms: 400 },
+  { kind: "out", text: "Found Ollama [Ollama.Ollama] Version 0.4.0" },
+  { kind: "nl" },
+  { kind: "pause", ms: 220 },
+  { kind: "out", text: "Downloading https://ollama.com/download/OllamaSetup.exe" },
+  { kind: "nl" },
+  { kind: "pause", ms: 240 },
+  { kind: "out", text: "Successfully installed" },
+  { kind: "nl" },
+  { kind: "pause", ms: 700 },
+  { kind: "nl" },
+  { kind: "type", text: "> ollama pull gemma4:12b" },
+  { kind: "nl" },
+  { kind: "pause", ms: 400 },
+  { kind: "out", text: "pulling manifest" },
+  { kind: "nl" },
+  { kind: "pause", ms: 260 },
+  { kind: "out", text: "pulling 8eeb52dfb3bb... 100% ▕████████████████▏ 7.2 GB" },
+  { kind: "nl" },
+  { kind: "pause", ms: 220 },
+  { kind: "out", text: "verifying sha256 digest" },
+  { kind: "nl" },
+  { kind: "pause", ms: 160 },
+  { kind: "out", text: "success" },
+  { kind: "nl" },
+  { kind: "pause", ms: 700 },
+  { kind: "nl" },
+  { kind: "type", text: "> ollama run gemma4:12b" },
+  { kind: "nl" },
+  { kind: "pause", ms: 500 },
+  { kind: "out", text: ">>> " },
+  { kind: "pause", ms: 1200 },
+  { kind: "out", text: "listo para analizar transcripciones." },
+  { kind: "pause", ms: 4500 },
+];
+
+const macRawCommand = `brew install ollama
 ollama pull gemma4:12b
-
-# 3. Verificar que corre
 ollama run gemma4:12b`;
 
-const winQuickstart = `# 1. Instalar Ollama
-# Descargalo desde https://ollama.com/download/windows
-
-# 2. Descargar Gemma 4 (~7GB, una sola vez)
+const winRawCommand = `winget install --id Ollama.Ollama
 ollama pull gemma4:12b
-
-# 3. Verificar que corre
 ollama run gemma4:12b`;
 
 /* ─── Manual install paths (power users) ───────────────────────────────────── */
@@ -318,7 +393,9 @@ export default function SuccessPage() {
   const quickstartRef = useRef<HTMLDivElement>(null);
   const quickstartInView = useInView(quickstartRef, { once: true, margin: "-60px" });
 
-  const quickstartCode = os === "mac" ? macQuickstart : winQuickstart;
+  const terminalSteps = os === "mac" ? macTerminalSteps : winTerminalSteps;
+  const terminalRaw = os === "mac" ? macRawCommand : winRawCommand;
+  const terminalTitle = os === "mac" ? "autoclipper — zsh" : "autoclipper — powershell";
   const manualPath = os === "mac" ? macManualPath : winManualPath;
 
   /* Auto-detect OS */
@@ -665,7 +742,7 @@ export default function SuccessPage() {
               />
             </motion.div>
 
-            {/* Terminal commands */}
+            {/* Terminal commands — animated typewriter */}
             <motion.div
               custom={0.3}
               variants={fadeUp}
@@ -677,7 +754,13 @@ export default function SuccessPage() {
                 marginTop: "var(--ac-space-5)",
               }}
             >
-              <CodeBlock code={quickstartCode} />
+              <TerminalTypewriter
+                steps={terminalSteps}
+                rawCommand={terminalRaw}
+                title={terminalTitle}
+                play={quickstartInView}
+                resetKey={os}
+              />
             </motion.div>
 
             {/* Details: other hardware tiers */}
