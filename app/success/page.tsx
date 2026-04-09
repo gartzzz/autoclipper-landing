@@ -7,47 +7,68 @@ import { useRef, useState, useEffect } from "react";
 
 const springConfig = { type: "spring" as const, stiffness: 380, damping: 22 };
 
-/* ─── Steps per OS ─────────────────────────────────────────────────────────── */
+/* ─── Next steps (email-first flow, OS-agnostic) ───────────────────────────── */
 
-const macSteps = [
+const nextSteps = [
   {
     number: "01",
-    title: "Ejecuta el instalador",
+    title: "Abre el correo de confirmacion",
     description:
-      "Abre el archivo .pkg que acabas de descargar. Sigue el asistente: siguiente, siguiente, contrasena, instalar. Listo.",
+      "Tu instalador y las instrucciones estan en la bandeja del correo que usaste para pagar.",
     detail:
-      "El instalador copia la extension, activa los permisos de Premiere y configura Ollama automaticamente. Si macOS muestra una alerta de seguridad, haz click derecho > Abrir.",
+      "El email llega en ~1 minuto. Si tarda, revisa 'Spam' o 'Promociones' — a veces cae ahi.",
   },
   {
     number: "02",
-    title: "Abre Premiere Pro",
+    title: "Ejecuta el instalador adjunto",
     description:
-      "Cierra Premiere completamente si estaba abierto (Cmd+Q). Abrelo de nuevo y ve a:",
+      "Doble click en el archivo .pkg (Mac) o .exe (Windows). El asistente hace el resto.",
+    detail:
+      "El instalador copia la extension a la carpeta de Premiere y configura los permisos automaticamente.",
+  },
+  {
+    number: "03",
+    title: "Instala Ollama y el modelo",
+    description:
+      "AutoClipper necesita Ollama corriendo localmente con un modelo Gemma 4.",
+    detail:
+      "Sigue la guia rapida mas abajo — son 3 comandos. La primera vez tarda ~5 min en descargar el modelo.",
+  },
+  {
+    number: "04",
+    title: "Abre Premiere y busca el panel",
+    description:
+      "Cierra Premiere completamente (Cmd+Q en Mac) y abrelo otra vez.",
     code: "Window > Extensions > AutoClipper",
     detail:
-      "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
+      "Puedes anclar el panel donde te convenga, como cualquier otro panel de Premiere.",
   },
 ];
 
-const winSteps = [
-  {
-    number: "01",
-    title: "Ejecuta el instalador",
-    description:
-      "Abre el archivo .exe que acabas de descargar. Sigue el asistente: siguiente, siguiente, instalar. No necesita permisos de administrador.",
-    detail:
-      "El instalador copia la extension, configura el registro de Windows para Premiere y establece la conexion con Ollama automaticamente.",
-  },
-  {
-    number: "02",
-    title: "Abre Premiere Pro",
-    description:
-      "Cierra Premiere completamente si estaba abierto. Abrelo de nuevo y ve a:",
-    code: "Window > Extensions > AutoClipper",
-    detail:
-      "El panel aparecera como cualquier otro panel de Premiere. Puedes anclarlo donde quieras.",
-  },
-];
+/* ─── Quick-start terminal commands (OS-specific) ──────────────────────────── */
+
+const macQuickstart = `# 1. Instalar Ollama
+brew install ollama
+
+# 2. Descargar Gemma 4 (~7GB, una sola vez)
+ollama pull gemma4:12b
+
+# 3. Verificar que corre
+ollama run gemma4:12b`;
+
+const winQuickstart = `# 1. Instalar Ollama
+# Descargalo desde https://ollama.com/download/windows
+
+# 2. Descargar Gemma 4 (~7GB, una sola vez)
+ollama pull gemma4:12b
+
+# 3. Verificar que corre
+ollama run gemma4:12b`;
+
+/* ─── Manual install paths (power users) ───────────────────────────────────── */
+
+const macManualPath = `~/Library/Application Support/Adobe/CEP/extensions/com.gartzzz.autoclipper/`;
+const winManualPath = `C:\\Users\\<tu-usuario>\\AppData\\Roaming\\Adobe\\CEP\\extensions\\com.gartzzz.autoclipper\\`;
 
 /* ─── Motion variants ──────────────────────────────────────────────────────── */
 
@@ -294,7 +315,11 @@ export default function SuccessPage() {
   const stepsRef = useRef<HTMLDivElement>(null);
   const stepsInView = useInView(stepsRef, { once: true, margin: "-60px" });
 
-  const steps = os === "mac" ? macSteps : winSteps;
+  const quickstartRef = useRef<HTMLDivElement>(null);
+  const quickstartInView = useInView(quickstartRef, { once: true, margin: "-60px" });
+
+  const quickstartCode = os === "mac" ? macQuickstart : winQuickstart;
+  const manualPath = os === "mac" ? macManualPath : winManualPath;
 
   /* Auto-detect OS */
   useEffect(() => {
@@ -381,9 +406,8 @@ export default function SuccessPage() {
               className="ac-heading ac-heading--2"
               style={{ textAlign: "center" }}
             >
-              AutoClipper es tuyo.
-              <br />
-              <span className="ac-highlight">Vamos a instalarlo.</span>
+              Enhorabuena, ya eres parte de{" "}
+              <span className="ac-highlight">AutoClipper</span>.
             </motion.h1>
 
             <motion.p
@@ -395,125 +419,129 @@ export default function SuccessPage() {
               style={{
                 textAlign: "center",
                 marginTop: "var(--ac-space-3)",
-                maxWidth: "540px",
+                maxWidth: "560px",
                 marginInline: "auto",
               }}
             >
-              Hemos enviado el instalador a tu correo.
+              Te hemos enviado el instalador al correo que usaste en el pago.
               <br />
               <span style={{ color: "var(--ac-text-secondary)" }}>
-                Revisa tu bandeja de entrada (y spam, por si acaso).
+                Es lo unico que necesitas para empezar.
               </span>
             </motion.p>
 
-            {/* Video placeholder */}
+            {/* Email callout box — primary CTA */}
             <motion.div
               custom={0.3}
               variants={fadeUp}
               initial="hidden"
               animate={heroInView ? "visible" : "hidden"}
               style={{
-                maxWidth: "680px",
+                maxWidth: "560px",
                 marginInline: "auto",
                 marginTop: "var(--ac-space-8)",
+                background: "var(--ac-cyan-dim)",
+                border: "1px solid var(--ac-cyan-muted)",
+                borderRadius: "var(--ac-radius-lg)",
+                padding: "var(--ac-space-5) var(--ac-space-6)",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "var(--ac-space-4)",
               }}
             >
               <div
                 style={{
-                  position: "relative",
-                  aspectRatio: "16 / 9",
-                  background: "var(--ac-bg-surface)",
-                  border: "1px solid var(--ac-border-subtle)",
-                  borderRadius: "var(--ac-radius-lg)",
+                  width: 44,
+                  height: 44,
+                  borderRadius: "var(--ac-radius-md)",
+                  background: "var(--ac-cyan-subtle)",
+                  border: "1px solid var(--ac-cyan-muted)",
                   display: "flex",
-                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "var(--ac-space-3)",
+                  fontSize: 22,
+                  flexShrink: 0,
                 }}
+                aria-hidden="true"
               >
-                <div
+                &#9993;
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <h3
                   style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: "50%",
-                    background: "var(--ac-cyan-dim)",
-                    border: "1px solid var(--ac-cyan-muted)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 28,
-                    color: "var(--ac-cyan)",
+                    margin: 0,
+                    marginBottom: "var(--ac-space-2)",
+                    fontSize: "var(--ac-text-md)",
+                    fontWeight: "var(--ac-weight-semibold)",
+                    color: "var(--ac-cyan-bright)",
+                    fontFamily: "var(--ac-font-sans)",
                   }}
                 >
-                  &#9654;
-                </div>
-                <p
+                  Revisa tu correo ahora
+                </h3>
+                <ul
                   className="ac-text"
                   style={{
-                    color: "var(--ac-text-secondary)",
-                    fontSize: "var(--ac-text-sm)",
                     margin: 0,
+                    padding: 0,
+                    listStyle: "none",
+                    fontSize: "var(--ac-text-sm)",
+                    color: "var(--ac-text-secondary)",
+                    lineHeight: "var(--ac-leading-relaxed)",
                   }}
                 >
-                  Video de instalacion — proximamente
-                </p>
+                  <li>
+                    <strong style={{ color: "var(--ac-text-primary)" }}>
+                      Asunto:
+                    </strong>{" "}
+                    Tu instalador de AutoClipper esta listo
+                  </li>
+                  <li>
+                    <strong style={{ color: "var(--ac-text-primary)" }}>
+                      De:
+                    </strong>{" "}
+                    hola@autoclipper.com
+                  </li>
+                  <li>
+                    Si no lo ves en 2 minutos, revisa{" "}
+                    <strong style={{ color: "var(--ac-text-primary)" }}>
+                      Spam
+                    </strong>{" "}
+                    o{" "}
+                    <strong style={{ color: "var(--ac-text-primary)" }}>
+                      Promociones
+                    </strong>
+                    .
+                  </li>
+                </ul>
               </div>
-            </motion.div>
-
-            {/* OS switcher for installation steps */}
-            <motion.div
-              custom={0.4}
-              variants={fadeUp}
-              initial="hidden"
-              animate={heroInView ? "visible" : "hidden"}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                gap: "var(--ac-space-2)",
-                marginTop: "var(--ac-space-6)",
-                maxWidth: 260,
-                marginInline: "auto",
-              }}
-            >
-              <OsTab
-                label="macOS"
-                icon="&#63743;"
-                active={os === "mac"}
-                onClick={() => setOs("mac")}
-              />
-              <OsTab
-                label="Windows"
-                icon="&#8862;"
-                active={os === "win"}
-                onClick={() => setOs("win")}
-              />
             </motion.div>
           </div>
         </section>
 
-        {/* ─── Installation guide ───────────────────────────────────────── */}
+        {/* ─── Next steps ──────────────────────────────────────────────── */}
         <section
           className="ac-section ac-section--alt"
           style={{ paddingTop: "var(--ac-space-16)" }}
         >
           <div className="ac-section__inner">
             <div data-reveal style={{ textAlign: "center" }}>
-              <span className="ac-heading--eyebrow">Instalacion</span>
+              <span className="ac-heading--eyebrow">Siguientes pasos</span>
             </div>
             <h2
               className="ac-heading ac-heading--2"
               data-reveal
               style={{ textAlign: "center" }}
             >
-              2 pasos. 1 minuto.
+              4 pasos. 5 minutos.
               <br />
-              Instala, abre Premiere, listo.
+              Y estas editando como un estudio.
             </h2>
 
-            {/* Steps */}
+            {/* Steps grid 2x2 */}
             <div
               ref={stepsRef}
+              className="success-steps-grid"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -522,9 +550,9 @@ export default function SuccessPage() {
                 margin: "var(--ac-space-8) auto 0",
               }}
             >
-              {steps.map((step, i) => (
+              {nextSteps.map((step, i) => (
                 <StepCard
-                  key={`${os}-${step.number}`}
+                  key={step.number}
                   step={step}
                   index={i}
                   isInView={stepsInView}
@@ -534,7 +562,7 @@ export default function SuccessPage() {
 
             <style>{`
               @media (max-width: 768px) {
-                div[style*="grid-template-columns: 1fr 1fr"] {
+                .success-steps-grid {
                   grid-template-columns: 1fr !important;
                 }
               }
@@ -573,12 +601,298 @@ export default function SuccessPage() {
                   : "Si Windows muestra SmartScreen, haz click en 'Mas informacion' > 'Ejecutar de todas formas'."}
               </p>
             </motion.div>
+          </div>
+        </section>
+
+        {/* ─── Quick-start guide (terminal) ─────────────────────────────── */}
+        <section
+          className="ac-section"
+          style={{
+            paddingTop: "var(--ac-space-16)",
+            paddingBottom: "var(--ac-space-20)",
+          }}
+        >
+          <div className="ac-section__inner" ref={quickstartRef}>
+            <div style={{ textAlign: "center" }}>
+              <motion.span
+                custom={0}
+                variants={fadeUp}
+                initial="hidden"
+                animate={quickstartInView ? "visible" : "hidden"}
+                className="ac-heading--eyebrow"
+              >
+                Prefieres ir directo?
+              </motion.span>
+            </div>
+            <motion.h2
+              custom={0.1}
+              variants={fadeUp}
+              initial="hidden"
+              animate={quickstartInView ? "visible" : "hidden"}
+              className="ac-heading ac-heading--2"
+              style={{ textAlign: "center" }}
+            >
+              Instala Ollama + Gemma 4 en{" "}
+              <span className="ac-highlight">3 comandos</span>.
+            </motion.h2>
+
+            {/* OS switcher for quickstart commands */}
+            <motion.div
+              custom={0.2}
+              variants={fadeUp}
+              initial="hidden"
+              animate={quickstartInView ? "visible" : "hidden"}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "var(--ac-space-2)",
+                marginTop: "var(--ac-space-6)",
+                maxWidth: 260,
+                marginInline: "auto",
+              }}
+            >
+              <OsTab
+                label="macOS"
+                icon="&#63743;"
+                active={os === "mac"}
+                onClick={() => setOs("mac")}
+              />
+              <OsTab
+                label="Windows"
+                icon="&#8862;"
+                active={os === "win"}
+                onClick={() => setOs("win")}
+              />
+            </motion.div>
+
+            {/* Terminal commands */}
+            <motion.div
+              custom={0.3}
+              variants={fadeUp}
+              initial="hidden"
+              animate={quickstartInView ? "visible" : "hidden"}
+              style={{
+                maxWidth: "680px",
+                marginInline: "auto",
+                marginTop: "var(--ac-space-5)",
+              }}
+            >
+              <CodeBlock code={quickstartCode} />
+            </motion.div>
+
+            {/* Details: other hardware tiers */}
+            <motion.div
+              custom={0.4}
+              variants={fadeUp}
+              initial="hidden"
+              animate={quickstartInView ? "visible" : "hidden"}
+              style={{
+                maxWidth: "680px",
+                marginInline: "auto",
+                marginTop: "var(--ac-space-4)",
+              }}
+            >
+              <details
+                style={{
+                  background: "var(--ac-bg-surface)",
+                  border: "1px solid var(--ac-border-subtle)",
+                  borderRadius: "var(--ac-radius-lg)",
+                  padding: "var(--ac-space-4) var(--ac-space-5)",
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "var(--ac-text-sm)",
+                    fontWeight: "var(--ac-weight-semibold)",
+                    color: "var(--ac-text-primary)",
+                    fontFamily: "var(--ac-font-sans)",
+                    listStyle: "none",
+                  }}
+                >
+                  Otro modelo segun tu hardware
+                </summary>
+                <div
+                  style={{
+                    marginTop: "var(--ac-space-3)",
+                    fontSize: "var(--ac-text-sm)",
+                    color: "var(--ac-text-secondary)",
+                    lineHeight: "var(--ac-leading-relaxed)",
+                  }}
+                >
+                  <table
+                    style={{
+                      width: "100%",
+                      borderCollapse: "collapse",
+                      fontSize: "var(--ac-text-sm)",
+                    }}
+                  >
+                    <thead>
+                      <tr
+                        style={{
+                          borderBottom: "1px solid var(--ac-border-subtle)",
+                        }}
+                      >
+                        <th
+                          style={{
+                            textAlign: "left",
+                            padding: "var(--ac-space-2) 0",
+                            color: "var(--ac-text-primary)",
+                            fontWeight: "var(--ac-weight-semibold)",
+                          }}
+                        >
+                          Hardware
+                        </th>
+                        <th
+                          style={{
+                            textAlign: "left",
+                            padding: "var(--ac-space-2) 0",
+                            color: "var(--ac-text-primary)",
+                            fontWeight: "var(--ac-weight-semibold)",
+                          }}
+                        >
+                          Modelo recomendado
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        style={{
+                          borderBottom: "1px solid var(--ac-border-faint)",
+                        }}
+                      >
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          8 GB RAM / VRAM
+                        </td>
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          <code
+                            className="ac-text--mono"
+                            style={{ color: "var(--ac-cyan-bright)" }}
+                          >
+                            gemma4:4b
+                          </code>
+                        </td>
+                      </tr>
+                      <tr
+                        style={{
+                          borderBottom: "1px solid var(--ac-border-faint)",
+                        }}
+                      >
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          16–32 GB (recomendado)
+                        </td>
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          <code
+                            className="ac-text--mono"
+                            style={{ color: "var(--ac-cyan-bright)" }}
+                          >
+                            gemma4:12b
+                          </code>
+                        </td>
+                      </tr>
+                      <tr
+                        style={{
+                          borderBottom: "1px solid var(--ac-border-faint)",
+                        }}
+                      >
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          48+ GB (Pro / Max)
+                        </td>
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          <code
+                            className="ac-text--mono"
+                            style={{ color: "var(--ac-cyan-bright)" }}
+                          >
+                            gemma4:27b
+                          </code>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          CPU modesto
+                        </td>
+                        <td style={{ padding: "var(--ac-space-2) 0" }}>
+                          <code
+                            className="ac-text--mono"
+                            style={{ color: "var(--ac-cyan-bright)" }}
+                          >
+                            gemma4:1b
+                          </code>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            </motion.div>
+
+            {/* Details: manual install path */}
+            <motion.div
+              custom={0.5}
+              variants={fadeUp}
+              initial="hidden"
+              animate={quickstartInView ? "visible" : "hidden"}
+              style={{
+                maxWidth: "680px",
+                marginInline: "auto",
+                marginTop: "var(--ac-space-3)",
+              }}
+            >
+              <details
+                style={{
+                  background: "var(--ac-bg-surface)",
+                  border: "1px solid var(--ac-border-subtle)",
+                  borderRadius: "var(--ac-radius-lg)",
+                  padding: "var(--ac-space-4) var(--ac-space-5)",
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    fontSize: "var(--ac-text-sm)",
+                    fontWeight: "var(--ac-weight-semibold)",
+                    color: "var(--ac-text-primary)",
+                    fontFamily: "var(--ac-font-sans)",
+                    listStyle: "none",
+                  }}
+                >
+                  Instalacion manual del .zxp (sin el instalador)
+                </summary>
+                <div style={{ marginTop: "var(--ac-space-3)" }}>
+                  <p
+                    style={{
+                      margin: 0,
+                      marginBottom: "var(--ac-space-3)",
+                      fontSize: "var(--ac-text-sm)",
+                      color: "var(--ac-text-secondary)",
+                      lineHeight: "var(--ac-leading-normal)",
+                    }}
+                  >
+                    El instalador hace esto por ti automaticamente. Esta
+                    alternativa es para casos donde el .pkg/.exe no funcione
+                    (Premiere portatil, CEP bloqueado, etc). Renombra el .zxp
+                    a .zip, descomprime y mueve la carpeta resultante a:
+                  </p>
+                  <CodeBlock code={manualPath} />
+                  <p
+                    style={{
+                      marginTop: "var(--ac-space-2)",
+                      marginBottom: 0,
+                      fontSize: "var(--ac-text-xs)",
+                      color: "var(--ac-text-tertiary)",
+                    }}
+                  >
+                    Reinicia Premiere despues y el panel aparecera en Window &gt; Extensions.
+                  </p>
+                </div>
+              </details>
+            </motion.div>
 
             <p
               className="ac-text ac-text--small"
               style={{
                 textAlign: "center",
-                marginTop: "var(--ac-space-8)",
+                marginTop: "var(--ac-space-10)",
                 opacity: 0.5,
               }}
             >
