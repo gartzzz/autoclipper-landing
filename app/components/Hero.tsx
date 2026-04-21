@@ -30,7 +30,7 @@ export default function Hero() {
               href="#precios"
               className="ac-button ac-button--primary ac-button--lg"
             >
-              Comprar por $49
+              Comprar por $67
               <span className="ac-button__arrow" aria-hidden="true">
                 &rarr;
               </span>

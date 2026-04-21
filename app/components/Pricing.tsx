@@ -9,6 +9,11 @@ import {
 } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
+import {
+  trackViewContent,
+  trackInitiateCheckout,
+  withEventId,
+} from "../lib/pixel";
 
 /* ─── Spring price counter ──────────────────────────────────────────────── */
 function AnimatedPrice({ target }: { target: number }) {
@@ -134,6 +139,14 @@ export default function Pricing() {
   const cardRef = useRef<HTMLDivElement>(null);
   const cardInView = useInView(cardRef, { once: true, margin: "-80px" });
 
+  /* Fire ViewContent when the pricing card first enters the viewport.
+     `once: true` garantiza que sólo se dispare una vez por sesión. */
+  useEffect(() => {
+    if (cardInView) {
+      trackViewContent({ contentName: "AutoClipper v0.1", value: 67 });
+    }
+  }, [cardInView]);
+
   /* Hover state — controls lifted glow shadow */
   const [hovered, setHovered] = useState(false);
 
@@ -211,7 +224,7 @@ export default function Pricing() {
           >
             <div className="ac-card__body--lg">
               <div className="ac-pricing-tier__header">
-                <span className="ac-badge ac-badge--cyan">Early Bird</span>
+                <span className="ac-badge ac-badge--cyan">Oleada 0</span>
               </div>
 
               <div
@@ -222,17 +235,30 @@ export default function Pricing() {
                   style={{
                     display: "flex",
                     alignItems: "baseline",
-                    gap: "var(--ac-space-2)",
+                    gap: "var(--ac-space-3)",
                   }}
                 >
-                  <AnimatedPrice target={49} />
+                  <span
+                    className="ac-text--mono"
+                    style={{
+                      fontSize: "var(--ac-text-lg)",
+                      fontWeight: "var(--ac-weight-medium)",
+                      color: "var(--ac-text-tertiary)",
+                      textDecoration: "line-through",
+                      letterSpacing: "var(--ac-tracking-tight)",
+                    }}
+                    aria-label="Early Bird agotado"
+                  >
+                    $49
+                  </span>
+                  <AnimatedPrice target={67} />
                   <span className="ac-text ac-text--small">un solo pago</span>
                 </div>
                 <p
                   className="ac-text ac-text--small"
                   style={{ marginTop: "var(--ac-space-2)" }}
                 >
-                  Precio de lanzamiento &mdash; sube con cada update
+                  Early Bird ($49) agotado &middot; Oleada 0 $67 hasta v1.0 &middot; despues $97
                 </p>
               </div>
 
@@ -258,6 +284,14 @@ export default function Pricing() {
               <div style={{ marginTop: "var(--ac-space-8)" }}>
                 <motion.a
                   href={STRIPE_PAYMENT_LINK}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const id = trackInitiateCheckout({ value: 67 });
+                    window.location.href = withEventId(
+                      STRIPE_PAYMENT_LINK,
+                      id
+                    );
+                  }}
                   className="ac-button ac-button--primary"
                   style={{ width: "100%", justifyContent: "center" }}
                   animate={breathe}

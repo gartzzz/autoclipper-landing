@@ -7,6 +7,7 @@ import {
 } from "framer-motion";
 import { useRef } from "react";
 import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
+import { trackInitiateCheckout, withEventId } from "../lib/pixel";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -139,14 +140,17 @@ function GlowButton({
   href,
   children,
   prefersReducedMotion,
+  onClick,
 }: {
   href: string;
   children: React.ReactNode;
   prefersReducedMotion: boolean | null;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <motion.a
       href={href}
+      onClick={onClick}
       className="ac-button ac-button--primary ac-button--lg"
       animate={
         prefersReducedMotion
@@ -274,8 +278,13 @@ export default function CTA() {
               <GlowButton
                 href={STRIPE_PAYMENT_LINK}
                 prefersReducedMotion={prefersReducedMotion}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const id = trackInitiateCheckout({ value: 67 });
+                  window.location.href = withEventId(STRIPE_PAYMENT_LINK, id);
+                }}
               >
-                Comprar por $49
+                Comprar por $67
                 <span className="ac-button__arrow" aria-hidden="true">
                   &rarr;
                 </span>

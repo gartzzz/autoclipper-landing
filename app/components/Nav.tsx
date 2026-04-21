@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
+import { trackInitiateCheckout, withEventId } from "../lib/pixel";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,9 +38,14 @@ export default function Nav() {
         <li>
           <a
             href={STRIPE_PAYMENT_LINK}
+            onClick={(e) => {
+              e.preventDefault();
+              const id = trackInitiateCheckout({ value: 67 });
+              window.location.href = withEventId(STRIPE_PAYMENT_LINK, id);
+            }}
             className="ac-button ac-button--sm ac-button--primary"
           >
-            Comprar $49
+            Comprar $67
           </a>
         </li>
       </ul>

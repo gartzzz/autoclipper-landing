@@ -151,7 +151,7 @@ export default function StatBar() {
             variants={priceVariants}
             style={{ display: "inline-block" }}
           >
-            $49
+            $67
           </motion.span>
           <span className="ac-stat__label">Un solo pago</span>
         </div>
