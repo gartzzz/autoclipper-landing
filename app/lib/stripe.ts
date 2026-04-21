@@ -1,7 +1,7 @@
-// Único punto donde vive el link de compra. En producción debe apuntar al
-// checkout custom de GHL (que triggea la automatización de entrega por email).
-// Setear NEXT_PUBLIC_STRIPE_LINK en Vercel con esa URL de GHL antes de deploy.
-// El fallback es el link de test de Stripe para no romper el dev local.
+// Único punto donde vive el link de compra. Apunta al checkout de GHL
+// (FastPayDirect) que dispara la automatización de entrega por email.
+// Para override puntual (testing, link alternativo) setear
+// NEXT_PUBLIC_STRIPE_LINK en Vercel o .env.local.
 export const STRIPE_PAYMENT_LINK =
   process.env.NEXT_PUBLIC_STRIPE_LINK ||
-  "https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800";
+  "https://link.fastpaydirect.com/payment-link/69d785fdc6a0e600f4d089b7";
