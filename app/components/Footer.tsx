@@ -9,10 +9,10 @@ export default function Footer() {
           </p>
         </div>
         <div className="ac-footer__links">
-          <a href="#como-funciona" className="ac-footer__link">
+          <a href="/#como-funciona" className="ac-footer__link">
             Como funciona
           </a>
-          <a href="#features" className="ac-footer__link">
+          <a href="/#features" className="ac-footer__link">
             Features
           </a>
           <a href="/legal/terminos" className="ac-footer__link">
