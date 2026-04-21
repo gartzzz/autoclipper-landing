@@ -15,6 +15,15 @@ export default function Footer() {
           <a href="#features" className="ac-footer__link">
             Features
           </a>
+          <a href="/legal/terminos" className="ac-footer__link">
+            Terminos
+          </a>
+          <a href="/legal/privacidad" className="ac-footer__link">
+            Privacidad
+          </a>
+          <a href="/legal/reembolso" className="ac-footer__link">
+            No-reembolso
+          </a>
         </div>
         <div className="ac-footer__copy">
           <p className="ac-text ac-text--small">

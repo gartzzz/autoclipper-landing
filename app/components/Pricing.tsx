@@ -8,6 +8,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
 
 /* ─── Spring price counter ──────────────────────────────────────────────── */
 function AnimatedPrice({ target }: { target: number }) {
@@ -120,14 +121,14 @@ const features = [
   "Clips ilimitados",
   "IA local con Gemma 4 — sin API keys, sin costes",
   "7 factores de viralidad",
-  "Secuencias + subtitulos + export en lote",
+  "Secuencias listas en Premiere",
+  "Revision keyboard-first (← → espacio)",
   "Updates gratis",
   "Soporte directo",
 ];
 
 /* ─── Component ─────────────────────────────────────────────────────────── */
 export default function Pricing() {
-  const STRIPE_PAYMENT_LINK = "https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800";
 
   /* Card entrance */
   const cardRef = useRef<HTMLDivElement>(null);
@@ -284,7 +285,7 @@ export default function Pricing() {
           data-reveal
           style={{ textAlign: "center", marginTop: "var(--ac-space-6)" }}
         >
-          Pago seguro con Stripe &middot; Descarga inmediata &middot; Sin
+          Pago seguro con Stripe &middot; Entrega por email &middot; Sin
           suscripcion
         </p>
       </div>

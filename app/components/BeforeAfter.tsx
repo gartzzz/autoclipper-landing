@@ -2,14 +2,14 @@ const beforeMetrics = [
   { value: "3+ horas", label: "scrubbing manual por video" },
   { value: "2-3 clips", label: "elegidos por intuicion" },
   { value: "0 datos", label: "sobre por que un clip funciona" },
-  { value: "Manual", label: "titulos, subtitulos, exportacion" },
+  { value: "Manual", label: "marcar puntos de entrada y salida" },
 ];
 
 const afterMetrics = [
   { value: "5 min", label: "analisis completo con IA" },
   { value: "10-15 clips", label: "puntuados por potencial viral" },
   { value: "7 factores", label: "scoring desglosado por clip" },
-  { value: "Automatico", label: "secuencias, titulos, subs y export" },
+  { value: "Automatico", label: "una secuencia por clip aprobado" },
 ];
 
 export default function BeforeAfter() {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -35,7 +36,7 @@ export default function Nav() {
         </li>
         <li>
           <a
-            href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
+            href={STRIPE_PAYMENT_LINK}
             className="ac-button ac-button--sm ac-button--primary"
           >
             Comprar $49

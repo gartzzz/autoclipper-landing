@@ -6,6 +6,7 @@ import {
   useInView,
 } from "framer-motion";
 import { useRef } from "react";
+import { STRIPE_PAYMENT_LINK } from "../lib/stripe";
 
 const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -271,7 +272,7 @@ export default function CTA() {
               }}
             >
               <GlowButton
-                href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
+                href={STRIPE_PAYMENT_LINK}
                 prefersReducedMotion={prefersReducedMotion}
               >
                 Comprar por $49

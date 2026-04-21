@@ -8,41 +8,63 @@ import TerminalTypewriter, { type TypeStep } from "./TerminalTypewriter";
 
 const springConfig = { type: "spring" as const, stiffness: 380, damping: 22 };
 
-/* ─── Next steps (email-first flow, OS-agnostic) ───────────────────────────── */
+/* ─── Next steps (manual install flow — zip con carpeta extension) ─────────── */
 
-const nextSteps = [
+type NextStep = {
+  number: string;
+  title: string;
+  description: string;
+  codeMac?: string;
+  codeWin?: string;
+  detail?: string;
+};
+
+const nextSteps: NextStep[] = [
   {
     number: "01",
     title: "Abre el correo de confirmacion",
     description:
-      "Tu instalador y las instrucciones estan en la bandeja del correo que usaste para pagar.",
+      "Tu descarga con AutoClipper esta en la bandeja del correo que usaste para pagar.",
     detail:
-      "El email llega en ~1 minuto. Si tarda, revisa 'Spam' o 'Promociones' — a veces cae ahi.",
+      "Llega en ~1 minuto. Si tarda, revisa 'Spam' o 'Promociones' — a veces cae ahi.",
   },
   {
     number: "02",
-    title: "Ejecuta el instalador adjunto",
+    title: "Descarga y descomprime el .zip",
     description:
-      "Doble click en el archivo .pkg (Mac) o .exe (Windows). El asistente hace el resto.",
+      "Haz click en el link del email. El .zip contiene una carpeta llamada com.gartzzz.autoclipper.",
     detail:
-      "El instalador copia la extension a la carpeta de Premiere y configura los permisos automaticamente.",
+      "En Mac a veces se descomprime solo; en Windows: click derecho > Extraer todo.",
   },
   {
     number: "03",
-    title: "Instala Ollama y el modelo",
+    title: "Mueve la carpeta a Extensions de CEP",
     description:
-      "AutoClipper necesita Ollama corriendo localmente con un modelo Gemma 4.",
+      "Copia la carpeta completa a la ruta de extensiones de Adobe segun tu sistema.",
+    codeMac: "~/Library/Application Support/Adobe/CEP/extensions/",
+    codeWin: "C:\\Users\\<tu-usuario>\\AppData\\Roaming\\Adobe\\CEP\\extensions\\",
     detail:
-      "Sigue la guia rapida mas abajo — son 3 comandos. La primera vez tarda ~5 min en descargar el modelo.",
+      "Si la carpeta extensions no existe, creala. En Mac la carpeta Library esta oculta: en Finder pulsa Cmd+Shift+G y pega la ruta.",
   },
   {
     number: "04",
-    title: "Abre Premiere y busca el panel",
+    title: "Habilita PlayerDebugMode (solo una vez)",
     description:
-      "Cierra Premiere completamente (Cmd+Q en Mac) y abrelo otra vez.",
-    code: "Window > Extensions > AutoClipper",
+      "Premiere bloquea extensiones no firmadas por defecto. Un comando en terminal lo activa.",
+    codeMac:
+      'for v in 9 10 11 12 13; do defaults write com.adobe.CSXS.$v PlayerDebugMode 1; done',
+    codeWin:
+      'reg add HKCU\\Software\\Adobe\\CSXS.11 /v PlayerDebugMode /t REG_SZ /d 1 /f',
     detail:
-      "Puedes anclar el panel donde te convenga, como cualquier otro panel de Premiere.",
+      "Solo la primera vez. A partir de ahi cualquier extension CEP en tu equipo funciona sin pedir firma.",
+  },
+  {
+    number: "05",
+    title: "Instala Ollama + Gemma 4 y reinicia Premiere",
+    description:
+      "Sigue la guia de abajo (3 comandos) y reinicia Premiere completamente (Cmd+Q en Mac, no solo cerrar el proyecto).",
+    detail:
+      "El panel aparece en Window > Extensions > AutoClipper. Puedes anclarlo donde te convenga.",
   },
 ];
 
@@ -140,11 +162,6 @@ const winRawCommand = `winget install --id Ollama.Ollama
 ollama pull gemma4:12b
 ollama run gemma4:12b`;
 
-/* ─── Manual install paths (power users) ───────────────────────────────────── */
-
-const macManualPath = `~/Library/Application Support/Adobe/CEP/extensions/com.gartzzz.autoclipper/`;
-const winManualPath = `C:\\Users\\<tu-usuario>\\AppData\\Roaming\\Adobe\\CEP\\extensions\\com.gartzzz.autoclipper\\`;
-
 /* ─── Motion variants ──────────────────────────────────────────────────────── */
 
 const fadeUp = {
@@ -228,23 +245,18 @@ function CodeBlock({ code }: { code: string }) {
 
 /* ─── Step card ────────────────────────────────────────────────────────────── */
 
-interface StepData {
-  number: string;
-  title: string;
-  description: string;
-  code?: string;
-  detail?: string;
-}
-
 function StepCard({
   step,
   index,
   isInView,
+  os,
 }: {
-  step: StepData;
+  step: NextStep;
   index: number;
   isInView: boolean;
+  os: "mac" | "win";
 }) {
+  const code = os === "mac" ? step.codeMac : step.codeWin;
   return (
     <motion.div
       custom={index}
@@ -317,7 +329,7 @@ function StepCard({
         {step.description}
       </p>
 
-      {step.code && <CodeBlock code={step.code} />}
+      {code && <CodeBlock code={code} />}
 
       {step.detail && (
         <p
@@ -396,7 +408,6 @@ export default function SuccessPage() {
   const terminalSteps = os === "mac" ? macTerminalSteps : winTerminalSteps;
   const terminalRaw = os === "mac" ? macRawCommand : winRawCommand;
   const terminalTitle = os === "mac" ? "autoclipper — zsh" : "autoclipper — powershell";
-  const manualPath = os === "mac" ? macManualPath : winManualPath;
 
   /* Auto-detect OS */
   useEffect(() => {
@@ -500,7 +511,7 @@ export default function SuccessPage() {
                 marginInline: "auto",
               }}
             >
-              Te hemos enviado el instalador al correo que usaste en el pago.
+              Te hemos enviado el link de descarga al correo que usaste en el pago.
               <br />
               <span style={{ color: "var(--ac-text-secondary)" }}>
                 Es lo unico que necesitas para empezar.
@@ -571,13 +582,13 @@ export default function SuccessPage() {
                     <strong style={{ color: "var(--ac-text-primary)" }}>
                       Asunto:
                     </strong>{" "}
-                    Tu instalador de AutoClipper esta listo
+                    Tu descarga de AutoClipper esta lista
                   </li>
                   <li>
                     <strong style={{ color: "var(--ac-text-primary)" }}>
                       De:
                     </strong>{" "}
-                    hola@autoclipper.com
+                    hola@elestudioeme.com
                   </li>
                   <li>
                     Si no lo ves en 2 minutos, revisa{" "}
@@ -610,18 +621,44 @@ export default function SuccessPage() {
               data-reveal
               style={{ textAlign: "center" }}
             >
-              4 pasos. 5 minutos.
+              5 pasos. 5 minutos.
               <br />
               Y estas editando como un estudio.
             </h2>
 
-            {/* Steps grid 2x2 */}
+            {/* OS switcher (compartido con el quickstart de abajo) */}
+            <div
+              data-reveal
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "var(--ac-space-2)",
+                marginTop: "var(--ac-space-6)",
+                maxWidth: 260,
+                marginInline: "auto",
+              }}
+            >
+              <OsTab
+                label="macOS"
+                icon="&#63743;"
+                active={os === "mac"}
+                onClick={() => setOs("mac")}
+              />
+              <OsTab
+                label="Windows"
+                icon="&#8862;"
+                active={os === "win"}
+                onClick={() => setOs("win")}
+              />
+            </div>
+
+            {/* Steps grid — auto-fit para que 5 pasos se acomoden bien */}
             <div
               ref={stepsRef}
               className="success-steps-grid"
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
                 gap: "var(--ac-space-4)",
                 maxWidth: "860px",
                 margin: "var(--ac-space-8) auto 0",
@@ -633,17 +670,10 @@ export default function SuccessPage() {
                   step={step}
                   index={i}
                   isInView={stepsInView}
+                  os={os}
                 />
               ))}
             </div>
-
-            <style>{`
-              @media (max-width: 768px) {
-                .success-steps-grid {
-                  grid-template-columns: 1fr !important;
-                }
-              }
-            `}</style>
 
             {/* Troubleshooting */}
             <motion.div
@@ -672,10 +702,11 @@ export default function SuccessPage() {
                   No aparece en Extensions?
                 </strong>{" "}
                 Asegurate de haber reiniciado Premiere completamente (Cmd+Q en
-                Mac, no solo cerrar el proyecto).{" "}
-                {os === "mac"
-                  ? "Si macOS bloquea el instalador, haz click derecho > Abrir."
-                  : "Si Windows muestra SmartScreen, haz click en 'Mas informacion' > 'Ejecutar de todas formas'."}
+                Mac, no solo cerrar el proyecto) y de haber ejecutado el comando
+                de PlayerDebugMode del paso 04. Si sigue sin aparecer, verifica
+                que la carpeta <code className="ac-text--mono">com.gartzzz.autoclipper</code>
+                esta dentro de <code className="ac-text--mono">extensions/</code> y
+                no anidada en otra subcarpeta.
               </p>
             </motion.div>
           </div>
@@ -909,68 +940,6 @@ export default function SuccessPage() {
               </details>
             </motion.div>
 
-            {/* Details: manual install path */}
-            <motion.div
-              custom={0.5}
-              variants={fadeUp}
-              initial="hidden"
-              animate={quickstartInView ? "visible" : "hidden"}
-              style={{
-                maxWidth: "680px",
-                marginInline: "auto",
-                marginTop: "var(--ac-space-3)",
-              }}
-            >
-              <details
-                style={{
-                  background: "var(--ac-bg-surface)",
-                  border: "1px solid var(--ac-border-subtle)",
-                  borderRadius: "var(--ac-radius-lg)",
-                  padding: "var(--ac-space-4) var(--ac-space-5)",
-                }}
-              >
-                <summary
-                  style={{
-                    cursor: "pointer",
-                    fontSize: "var(--ac-text-sm)",
-                    fontWeight: "var(--ac-weight-semibold)",
-                    color: "var(--ac-text-primary)",
-                    fontFamily: "var(--ac-font-sans)",
-                    listStyle: "none",
-                  }}
-                >
-                  Instalacion manual del .zxp (sin el instalador)
-                </summary>
-                <div style={{ marginTop: "var(--ac-space-3)" }}>
-                  <p
-                    style={{
-                      margin: 0,
-                      marginBottom: "var(--ac-space-3)",
-                      fontSize: "var(--ac-text-sm)",
-                      color: "var(--ac-text-secondary)",
-                      lineHeight: "var(--ac-leading-normal)",
-                    }}
-                  >
-                    El instalador hace esto por ti automaticamente. Esta
-                    alternativa es para casos donde el .pkg/.exe no funcione
-                    (Premiere portatil, CEP bloqueado, etc). Renombra el .zxp
-                    a .zip, descomprime y mueve la carpeta resultante a:
-                  </p>
-                  <CodeBlock code={manualPath} />
-                  <p
-                    style={{
-                      marginTop: "var(--ac-space-2)",
-                      marginBottom: 0,
-                      fontSize: "var(--ac-text-xs)",
-                      color: "var(--ac-text-tertiary)",
-                    }}
-                  >
-                    Reinicia Premiere despues y el panel aparecera en Window &gt; Extensions.
-                  </p>
-                </div>
-              </details>
-            </motion.div>
-
             <p
               className="ac-text ac-text--small"
               style={{
@@ -979,7 +948,7 @@ export default function SuccessPage() {
                 opacity: 0.5,
               }}
             >
-              Problemas? Escribe a soporte@autoclipper.com
+              Problemas? Escribe a hola@elestudioeme.com
             </p>
           </div>
         </section>

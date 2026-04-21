@@ -13,21 +13,21 @@ export default function Hero() {
           </span>
 
           <h1 className="ac-heading ac-heading--display ac-hero-animate--title">
-            Tu video tiene momentos virales. AutoClipper los encuentra, los
-            corta y los exporta.
+            Tu video tiene momentos virales. AutoClipper los encuentra y los
+            prepara para que solo tengas que exportar.
           </h1>
 
           <p className="ac-hero__sub ac-hero-animate--subtitle">
             Pega tu transcripcion. La IA detecta los momentos con mayor carga
-            viral, los puntua en 7 factores, los divide en secuencias
-            independientes, les pone titulos y subtitulos, y los deja listos
-            para exportar en lote a TikTok, Reels y Shorts. Todo dentro de
-            Premiere Pro.
+            viral, los puntua en 7 factores y genera una secuencia
+            independiente en Premiere por cada clip aprobado. Revision
+            keyboard-first: 10-15 clips listos en 5 minutos, sin tocar el
+            raton.
           </p>
 
           <div className="ac-hero__actions ac-hero-animate--cta">
             <a
-              href="https://buy.stripe.com/test_eVqeVcev987M3JMcAwew800"
+              href="#precios"
               className="ac-button ac-button--primary ac-button--lg"
             >
               Comprar por $49

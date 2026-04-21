@@ -19,7 +19,7 @@ const STEPS: WizardStep[] = [
   },
   {
     title: "Instala el plugin",
-    summary: "autoclipper-v1.0.zxp instalado",
+    summary: "com.gartzzz.autoclipper copiado a CEP",
   },
   {
     title: "Pega la transcripcion",

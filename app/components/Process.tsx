@@ -28,9 +28,9 @@ const steps = [
   },
   {
     number: "03",
-    title: "AutoClipper hace el resto",
+    title: "AutoClipper genera las secuencias",
     description:
-      "Los clips aprobados se dividen en secuencias independientes automaticamente. AutoClipper les agrega titulos y subtitulos, y los deja listos para exportar en lote a TikTok, Reels y Shorts. Tu solo le das al boton.",
+      "Cada clip aprobado se convierte en una secuencia independiente dentro de Premiere, con sus puntos de entrada y salida exactos. Tu solo abres cada secuencia, anades los retoques que quieras y exportas con tu workflow habitual.",
   },
 ];
 
