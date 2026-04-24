@@ -280,11 +280,11 @@ export default function CTA() {
                 prefersReducedMotion={prefersReducedMotion}
                 onClick={(e) => {
                   e.preventDefault();
-                  const id = trackInitiateCheckout({ value: 67 });
+                  const id = trackInitiateCheckout({ value: 49 });
                   window.location.href = withEventId(STRIPE_PAYMENT_LINK, id);
                 }}
               >
-                Comprar por $67
+                Comprar por $49
                 <span className="ac-button__arrow" aria-hidden="true">
                   &rarr;
                 </span>

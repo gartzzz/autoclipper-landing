@@ -139,7 +139,7 @@ export default function StatBar() {
         style={{ transformOrigin: "center" }}
       />
 
-      {/* ── Stat 3: Price ── */}
+      {/* ── Stat 3: Price transition ── */}
       <motion.div
         className="ac-stat-bar__item"
         data-reveal-child
@@ -147,13 +147,24 @@ export default function StatBar() {
       >
         <div className="ac-stat">
           <motion.span
-            className="ac-stat__value ac-stat__value--cyan"
+            className="ac-stat__value"
             variants={priceVariants}
             style={{ display: "inline-block" }}
           >
-            $67
+            <span className="ac-stat__value--cyan">$49</span>
+            <span
+              aria-hidden="true"
+              style={{
+                color: "var(--ac-warning)",
+                margin: "0 var(--ac-space-2)",
+                fontWeight: "var(--ac-weight-medium)",
+              }}
+            >
+              {"→"}
+            </span>
+            <span style={{ color: "var(--ac-text-secondary)" }}>$67</span>
           </motion.span>
-          <span className="ac-stat__label">Un solo pago</span>
+          <span className="ac-stat__label">Early Bird &middot; primeros 100</span>
         </div>
       </motion.div>
     </motion.div>

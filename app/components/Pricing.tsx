@@ -14,6 +14,14 @@ import {
   trackInitiateCheckout,
   withEventId,
 } from "../lib/pixel";
+import {
+  EARLY_BIRD_LIMIT,
+  PRICE_EARLY_BIRD,
+  PRICE_POST_V1,
+  PRICE_TIER_0,
+  V1_RELEASE_LABEL,
+} from "../lib/config";
+import Countdown from "./Countdown";
 
 /* ─── Spring price counter ──────────────────────────────────────────────── */
 function AnimatedPrice({ target }: { target: number }) {
@@ -121,6 +129,138 @@ const breathe: import("framer-motion").TargetAndTransition = {
   },
 };
 
+/* ─── Price ladder ──────────────────────────────────────────────────────── */
+interface Tier {
+  price: number;
+  label: string;
+  active?: boolean;
+}
+
+function PriceLadder() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+
+  const tiers: Tier[] = [
+    {
+      price: PRICE_EARLY_BIRD,
+      label: `Early Bird · primeros ${EARLY_BIRD_LIMIT}`,
+      active: true,
+    },
+    { price: PRICE_TIER_0, label: "hasta v1.0" },
+    { price: PRICE_POST_V1, label: "post-v1.0" },
+  ];
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        display: "flex",
+        alignItems: "stretch",
+        gap: "var(--ac-space-1)",
+        marginTop: "var(--ac-space-5)",
+        fontSize: "var(--ac-text-xs)",
+      }}
+    >
+      {tiers.map((tier, i) => (
+        <div
+          key={tier.price}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--ac-space-1)",
+            flex: 1,
+            minWidth: 0,
+          }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 6 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, delay: 0.15 + i * 0.12, ease: "easeOut" }}
+            style={{
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: "var(--ac-space-2)",
+              padding: "var(--ac-space-2) var(--ac-space-3)",
+              borderRadius: "var(--ac-radius-sm)",
+              background: tier.active
+                ? "rgba(157, 140, 255, 0.08)"
+                : "transparent",
+              border: tier.active
+                ? "1px solid var(--ac-cyan-subtle)"
+                : "1px dashed rgba(255, 255, 255, 0.08)",
+              minWidth: 0,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              className={tier.active ? "ac-pulse-glow" : undefined}
+              style={{
+                display: "inline-block",
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                flexShrink: 0,
+                background: tier.active
+                  ? "var(--ac-cyan)"
+                  : "transparent",
+                border: tier.active
+                  ? "none"
+                  : "1px solid var(--ac-text-tertiary)",
+                boxShadow: tier.active
+                  ? "0 0 10px var(--ac-cyan)"
+                  : "none",
+              }}
+            />
+            <span
+              className="ac-text--mono"
+              style={{
+                fontWeight: tier.active
+                  ? "var(--ac-weight-semibold)"
+                  : "var(--ac-weight-medium)",
+                color: tier.active
+                  ? "var(--ac-text-primary)"
+                  : "var(--ac-text-tertiary)",
+                letterSpacing: "var(--ac-tracking-tight)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              ${tier.price}
+            </span>
+            <span
+              style={{
+                color: tier.active
+                  ? "var(--ac-text-secondary)"
+                  : "var(--ac-text-tertiary)",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {tier.label}
+            </span>
+          </motion.div>
+          {i < tiers.length - 1 && (
+            <motion.span
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.3, delay: 0.35 + i * 0.12 }}
+              style={{
+                color: "var(--ac-text-tertiary)",
+                fontSize: "var(--ac-text-sm)",
+                flexShrink: 0,
+              }}
+            >
+              &rarr;
+            </motion.span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ─── Features data ─────────────────────────────────────────────────────── */
 const features = [
   "Clips ilimitados",
@@ -143,7 +283,7 @@ export default function Pricing() {
      `once: true` garantiza que sólo se dispare una vez por sesión. */
   useEffect(() => {
     if (cardInView) {
-      trackViewContent({ contentName: "AutoClipper v0.1", value: 67 });
+      trackViewContent({ contentName: "AutoClipper v0.1", value: PRICE_EARLY_BIRD });
     }
   }, [cardInView]);
 
@@ -224,7 +364,28 @@ export default function Pricing() {
           >
             <div className="ac-card__body--lg">
               <div className="ac-pricing-tier__header">
-                <span className="ac-badge ac-badge--cyan">Oleada 0</span>
+                <span
+                  className="ac-badge ac-badge--cyan"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "var(--ac-space-2)",
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="ac-pulse-glow"
+                    style={{
+                      display: "inline-block",
+                      width: "7px",
+                      height: "7px",
+                      borderRadius: "50%",
+                      background: "var(--ac-cyan)",
+                      boxShadow: "0 0 10px var(--ac-cyan)",
+                    }}
+                  />
+                  Early Bird &middot; primeros {EARLY_BIRD_LIMIT}
+                </span>
               </div>
 
               <div
@@ -247,20 +408,33 @@ export default function Pricing() {
                       textDecoration: "line-through",
                       letterSpacing: "var(--ac-tracking-tight)",
                     }}
-                    aria-label="Early Bird agotado"
+                    aria-label="Precio regular"
                   >
-                    $49
+                    ${PRICE_POST_V1}
                   </span>
-                  <AnimatedPrice target={67} />
+                  <AnimatedPrice target={PRICE_EARLY_BIRD} />
                   <span className="ac-text ac-text--small">un solo pago</span>
                 </div>
                 <p
                   className="ac-text ac-text--small"
                   style={{ marginTop: "var(--ac-space-2)" }}
                 >
-                  Early Bird ($49) agotado &middot; Oleada 0 $67 hasta v1.0 &middot; despues $97
+                  Los primeros {EARLY_BIRD_LIMIT} en ${PRICE_EARLY_BIRD} &middot; luego ${PRICE_TIER_0} hasta v1.0 ({V1_RELEASE_LABEL}) &middot; despues ${PRICE_POST_V1} &middot; No vuelve a bajar
                 </p>
               </div>
+
+              <PriceLadder />
+
+              <p
+                className="ac-text ac-text--small"
+                style={{
+                  marginTop: "var(--ac-space-3)",
+                  color: "var(--ac-text-tertiary)",
+                  textAlign: "center",
+                }}
+              >
+                v1.0 el {V1_RELEASE_LABEL} &middot; faltan <Countdown variant="full" />
+              </p>
 
               <motion.ul
                 ref={featuresRef}
@@ -286,7 +460,7 @@ export default function Pricing() {
                   href={STRIPE_PAYMENT_LINK}
                   onClick={(e) => {
                     e.preventDefault();
-                    const id = trackInitiateCheckout({ value: 67 });
+                    const id = trackInitiateCheckout({ value: PRICE_EARLY_BIRD });
                     window.location.href = withEventId(
                       STRIPE_PAYMENT_LINK,
                       id

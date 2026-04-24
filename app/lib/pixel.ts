@@ -61,7 +61,7 @@ export function trackViewContent(params?: {
     {
       content_name: params?.contentName ?? "AutoClipper v0.1",
       content_type: "product",
-      value: params?.value ?? 67,
+      value: params?.value ?? 49,
       currency: params?.currency ?? "USD",
     },
     { eventID: eventId }
@@ -82,7 +82,7 @@ export function trackInitiateCheckout(params?: {
       "InitiateCheckout",
       {
         content_name: "AutoClipper v0.1",
-        value: params?.value ?? 67,
+        value: params?.value ?? 49,
         currency: params?.currency ?? "USD",
       },
       { eventID: eventId }

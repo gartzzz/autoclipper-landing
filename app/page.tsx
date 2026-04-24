@@ -12,6 +12,7 @@ import Footer from "./components/Footer";
 import ScrollReveal from "./components/ScrollReveal";
 import RefProvider from "./components/RefProvider";
 import RefBanner from "./components/RefBanner";
+import UrgencyBar from "./components/UrgencyBar";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <Suspense>
         <RefProvider>
           <RefBanner />
+          <UrgencyBar />
         </RefProvider>
       </Suspense>
       <Nav />

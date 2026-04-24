@@ -40,12 +40,12 @@ export default function Nav() {
             href={STRIPE_PAYMENT_LINK}
             onClick={(e) => {
               e.preventDefault();
-              const id = trackInitiateCheckout({ value: 67 });
+              const id = trackInitiateCheckout({ value: 49 });
               window.location.href = withEventId(STRIPE_PAYMENT_LINK, id);
             }}
             className="ac-button ac-button--sm ac-button--primary"
           >
-            Comprar $67
+            Comprar $49
           </a>
         </li>
       </ul>
